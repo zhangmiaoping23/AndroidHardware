@@ -64,11 +64,15 @@ public class HardwareUtils {
 
     public static String getBuildSerial(){
         String buildSerial = "";
+        /*
         try{
+            //此方法在compileSDKVersion=26才引入
             buildSerial = Build.getSerial();
         }catch (NoSuchMethodError exception){
             buildSerial = Build.SERIAL;
         }
+        */
+        buildSerial = Build.SERIAL;
         return buildSerial;
     }
 
