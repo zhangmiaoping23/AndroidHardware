@@ -26,3 +26,13 @@ dependencies {
     })
     testCompile 'junit:junit:4.12'
 }
+
+String SDK_DIR = null //System.getenv("ANDROID_SDK_HOME")
+if (SDK_DIR == null) {
+    Properties props = new Properties()
+    props.load(new FileInputStream(project.rootProject.file("local.properties")))
+    SDK_DIR = props.get('sdk.dir');
+}
+dependencies {
+    provided files("${SDK_DIR}/platforms/android-24/data/layoutlib.jar")
+}

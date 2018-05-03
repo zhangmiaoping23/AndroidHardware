@@ -3,13 +3,17 @@ package com.example.hardware;
 import android.app.Activity;
 import android.os.Bundle;
 
+import com.example.hardware.Util.HardwareUtils;
 import com.example.hardware.Util.LogUtils;
+import com.example.hardware.Util.RuntimeUtils;
 
 public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        int runtimeType = RuntimeUtils.getRuntimeType();
+        LogUtils.i(String.format("runtimeType=%s",String.valueOf(runtimeType)));
         getBuildHardware();
         String imei = HardwareUtils.getImei(this);
         LogUtils.i(String.format("imei=%s",imei));

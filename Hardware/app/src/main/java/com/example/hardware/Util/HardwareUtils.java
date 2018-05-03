@@ -1,4 +1,4 @@
-package com.example.hardware;
+package com.example.hardware.Util;
 import android.content.Context;
 import android.os.Build;
 import android.telephony.TelephonyManager;
@@ -6,6 +6,9 @@ import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.WindowManager;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.Reader;
 import java.util.TimeZone;
 
 /**
@@ -171,24 +174,13 @@ public class HardwareUtils {
         return firmwareVersion;
     }
 
-
-
-
-
-
-
-
-
-
-
-
     public static String getImei(Context context){
         return getDeviceId(context);
     }
 
     public static String getDeviceId(Context context) {
         String deviceId = "";
-        TelephonyManager telephonyManager = (TelephonyManager)context.getSystemService("phone");
+        TelephonyManager telephonyManager = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
         if(null != telephonyManager){
             deviceId = telephonyManager.getDeviceId();
         }
@@ -197,7 +189,7 @@ public class HardwareUtils {
     public static String getDensityDpi(Context context) {
         String densityDpi = "";
         DisplayMetrics displayMetrics = null;
-        WindowManager windowManager = (WindowManager)context.getSystemService("window");
+        WindowManager windowManager = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
         if(windowManager != null) {
             Display display = windowManager.getDefaultDisplay();
             if(display != null) {
@@ -216,4 +208,57 @@ public class HardwareUtils {
         String timeZone = TimeZone.getDefault().getID();
         return timeZone;
     }
+
+    /*
+    private static String getValueFromBuildPropFile() {
+        String[] splitArrays;
+        BufferedReader bufferedReader = null;
+        FileReader fileReader = null;
+        int twoValue = 2;
+        String nullStr = null;
+        String buildPropPath = "/system/build.prop";
+        try {
+            fileReader = new FileReader(buildPropPath);
+            bufferedReader = new BufferedReader(((Reader)fileReader), 2048);
+            do {
+                String cmdline = = bufferedReader.readLine();
+                if(cmdline != null) {
+                    splitArrays = buildPropPath.split("=", 2);
+                    if(splitArrays.length != twoValue) {
+                        continue;
+                    }
+
+                    if(splitArrays[0].equals("ro.product.cpu.abilist")) {
+                        buildPropPath = splitArrays[1];
+                    }
+                    else {
+                        if(!splitArrays[0].equals("ro.product.cpu.abi")) {
+                            continue;
+                        }
+
+                        break;
+                    }
+                }
+            }
+            while(true);
+        }catch (Exception exception){
+
+        }
+        finally {
+            try{
+                if(null != bufferedReader){
+                    bufferedReader.close();
+                }
+
+                if(null != fileReader){
+                    fileReader.close();
+                }
+            }catch (Exception exception){
+
+            }
+        }
+
+        return nullStr;
+    }
+    */
 }
