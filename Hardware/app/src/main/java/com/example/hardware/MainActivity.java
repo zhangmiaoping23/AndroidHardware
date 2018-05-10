@@ -38,6 +38,12 @@ public class MainActivity extends Activity {
         String buildCpuApi2 = HardwareUtils.getbuildCpuApi2();
         LogUtils.i(String.format("buildCpuApi2=%s",buildCpuApi2));
 
+        String[] supportedApis = HardwareUtils.getBuildSupportAbis();
+        for(int index = 0; index < supportedApis.length;index ++){
+            LogUtils.i(String.format("SupportAbi%d=%s",index,supportedApis[index]));
+        }
+
+
         String buildDevice = HardwareUtils.getBuildDevice();
         LogUtils.i(String.format("buildDevice=%s",buildDevice));
 

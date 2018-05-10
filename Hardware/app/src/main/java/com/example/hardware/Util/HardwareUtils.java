@@ -2,6 +2,7 @@ package com.example.hardware.Util;
 import android.content.Context;
 import android.os.Build;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.WindowManager;
@@ -33,6 +34,21 @@ public class HardwareUtils {
     public static String getBuildBrand(){
         String buildBrand = Build.BRAND;
         return buildBrand;
+    }
+
+    public static String[] getBuildSupportAbis(){
+        String[] ret;
+        if(Build.VERSION.SDK_INT >= 21 && Build.SUPPORTED_ABIS.length > 0) {
+            ret = Build.SUPPORTED_ABIS;
+        }
+        else if(!TextUtils.isEmpty(Build.CPU_ABI2)) {
+            ret = new String[]{Build.CPU_ABI, Build.CPU_ABI2};
+        }
+        else {
+            ret = new String[]{Build.CPU_ABI};
+        }
+
+        return ret;
     }
 
     public static String getbuildCpuApi(){

@@ -9,13 +9,14 @@ public class RuntimeUtils {
     public static int getRuntimeType() {
         String defaultValue = null;
         int ret = RUNTIME_TYPE_DALVIK;
+        //例子：libart.so
         String tmpValue = SystemProperties.get("persist.sys.dalvik.vm.lib.2", defaultValue);
         if((tmpValue == null) || ("".equals(tmpValue))) {
             tmpValue = SystemProperties.get("persist.sys.dalvik.vm.lib", defaultValue);
         }
 
         if((tmpValue == null) || ("".equals(tmpValue))) {
-            //例子：Dalvik 1.6.0
+            //例子：Dalvik为 1.6.0 art为2.1.0
             tmpValue = System.getProperty("java.vm.version");
             if((tmpValue != null) && (tmpValue.startsWith("1"))) {
                 ret = RUNTIME_TYPE_DALVIK;
