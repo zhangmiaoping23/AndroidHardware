@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.net.URLEncoder;
+import java.util.Locale;
 
 public class OppoHardwareUtils {
     public static void getHardwares(Context context){
@@ -23,8 +24,12 @@ public class OppoHardwareUtils {
 
             String colorImei = OppoHardwareUtils.reflectColorImei(context);
             LogUtils.i(String.format("oppo colorImei(higher than imei)=%s",colorImei));
+
             String insVer = getInsVer(context);
             LogUtils.i(String.format("oppo insVer=%s",colorImei));
+
+            String locale = getLocale();
+            LogUtils.i(String.format("oppo locale=%s",locale));
         }
     }
 
@@ -66,6 +71,24 @@ public class OppoHardwareUtils {
             exception.printStackTrace();
         }
         return romName;
+    }
+
+    public static String getLocale() {
+        String oppoRegion =  "";
+        try {
+            Class systemPropertiesClass = Class.forName("android.os.SystemProperties");
+            oppoRegion = (String)systemPropertiesClass.getMethod("get", String.class, String.class).invoke(systemPropertiesClass, "persist.sys.oppo.region", "");           // "CN"
+        }
+        catch(Exception exception) {
+            exception.printStackTrace();
+        }
+        Locale locale = Locale.getDefault();
+        String ret = locale.getLanguage() + "-" + locale.getCountry();                           // language="zh" Country="CN"
+        if(!TextUtils.isEmpty(((CharSequence)oppoRegion))) {
+            ret = ret + ";" + oppoRegion;
+        }
+
+        return ret;
     }
 
     public static String getInsVer(Context argContext) {
@@ -176,7 +199,7 @@ public class OppoHardwareUtils {
         int ret = -1;
         PackageManager packageManager = argContext.getPackageManager();
         try {
-            ApplicationInfo applicationInfo = packageManager.getApplicationInfo("com.nearme.instant.platform", 128);
+            ApplicationInfo applicationInfo = packageManager.getApplicationInfo("com.nearme.instant.platform", packageManager.GET_META_DATA);
             if(applicationInfo == null) {
                 return ret;
             }
