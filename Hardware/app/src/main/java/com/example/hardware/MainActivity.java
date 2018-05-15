@@ -25,7 +25,6 @@ public class MainActivity extends Activity {
         LogUtils.i(String.format("userAgent=%s",userAgent));
 
         OppoHardwareUtils.getHardwares(this);
-
         setContentView(R.layout.activity_main);
     }
     /*
