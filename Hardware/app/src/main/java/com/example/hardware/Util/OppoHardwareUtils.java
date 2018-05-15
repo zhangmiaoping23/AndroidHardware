@@ -3,18 +3,38 @@ package com.example.hardware.Util;
 import android.content.Context;
 import android.text.TextUtils;
 
+import java.lang.reflect.Method;
+
 public class OppoHardwareUtils {
+    public static void getHardwares(Context context){
+        String buildBrand = HardwareUtils.getBuildBrand();
+        buildBrand = buildBrand.toLowerCase();
+        if(buildBrand.contains("oppo")){
+            //oppo机型特有的属性
+            String mobileRomVersion = OppoHardwareUtils.getMobileRomVersion();
+            LogUtils.i(String.format("oppo mobileRomVersion=%s",mobileRomVersion));
+
+            String romName = OppoHardwareUtils.getRomName();
+            LogUtils.i(String.format("oppo romName(ro.build.display.id)=%s",romName));
+
+            String colorImei = OppoHardwareUtils.reflectColorImei(context);
+            LogUtils.i(String.format("oppo colorImei(higher than imei)=%s",colorImei));
+        }
+    }
+
     //此优先级高于HardwareUtils.getImei(Context context)
     public static String reflectColorImei(Context argContext) {
         String colorImei = null;
         try {
             Class colorOSTelephonyManagerClass = Class.forName("android.telephony.ColorOSTelephonyManager");
-            colorImei =(String)colorOSTelephonyManagerClass.getMethod("colorGetImei", Integer.TYPE).invoke(colorOSTelephonyManagerClass.getMethod("getDefault", Context.class).invoke(colorOSTelephonyManagerClass, argContext), Integer.valueOf(0));
+            Method getDefaultMethod = colorOSTelephonyManagerClass.getMethod("getDefault", Context.class);
+            Object colorOSTelephonyManager = getDefaultMethod.invoke(colorOSTelephonyManagerClass, argContext);
+            Method colorGetImeiMethod = colorOSTelephonyManagerClass.getMethod("colorGetImei", Integer.TYPE);
+            colorImei =(String)colorGetImeiMethod.invoke(colorOSTelephonyManager, Integer.valueOf(0));
         }
         catch(Exception exception) {
             exception.printStackTrace();
         }
-
         return colorImei;
     }
 

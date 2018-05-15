@@ -1,27 +1,66 @@
 package com.example.hardware;
 
 import android.app.Activity;
+import android.graphics.Path;
 import android.os.Bundle;
 
 import com.example.hardware.Util.HardwareUtils;
 import com.example.hardware.Util.LogUtils;
+import com.example.hardware.Util.OppoHardwareUtils;
 import com.example.hardware.Util.RuntimeUtils;
+import com.example.hardware.Util.SignatureUtils;
 
 public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SignatureUtils.getSignatureHashCode(this);
         int runtimeType = RuntimeUtils.getRuntimeType();
         LogUtils.i(String.format("runtimeType=%s",String.valueOf(runtimeType)));
         getBuildHardware();
         String imei = HardwareUtils.getImei(this);
-        LogUtils.i(String.format("imei=%s",imei));
+        LogUtils.i(String.format("telephonyManagerImei=%s",imei));
         String userAgent = HardwareUtils.getSystemUserAgent();
         LogUtils.i(String.format("userAgent=%s",userAgent));
+
+        OppoHardwareUtils.getHardwares(this);
+
         setContentView(R.layout.activity_main);
     }
-
+    /*
+    例子一：
+        I/AndroidHardware: buildBoard=full_oppo6755_15111
+        I/AndroidHardware: buildBootloader=unknown
+        I/AndroidHardware: buildBrand=OPPO
+        I/AndroidHardware: buildCpuApi=arm64-v8a
+        I/AndroidHardware: buildCpuApi2=
+        I/AndroidHardware: SupportAbi0=arm64-v8a
+        I/AndroidHardware: SupportAbi1=armeabi-v7a
+        I/AndroidHardware: SupportAbi2=armeabi
+        I/AndroidHardware: buildDevice=R9
+        I/AndroidHardware: buildDisplay=R9m_11_A.13_160314
+        I/AndroidHardware: buildFingerPrint=OPPO/R9m/R9:5.1/LMY47I/1449641681:user/release-keys
+        I/AndroidHardware: buildRadioVersion=MOLY.LR11.W1539.MD.MP.V9.P36.T36, 2016/03/12 23:22
+        I/AndroidHardware: buildSerial=IRFMW8CMLFFASGGY
+        I/AndroidHardware: buildHardware=mt6755
+        I/AndroidHardware: buildHost=ubuntu-121-109
+        I/AndroidHardware: buildId=LMY47I
+        I/AndroidHardware: buildManufacturer=OPPO
+        I/AndroidHardware: buildModel=OPPO R9m
+        I/AndroidHardware: buildProduct=R9m
+        I/AndroidHardware: buildTags=dev-keys
+        I/AndroidHardware: buildTime=1457895750000
+        I/AndroidHardware: buildType=user
+        I/AndroidHardware: buildUser=root
+        I/AndroidHardware: buildVersionBaseOS=OPPO/R9m/R9:5.1/LMY47I/1449641681:user/release-keys
+        I/AndroidHardware: buildVersionCodeName=REL
+        I/AndroidHardware: buildVersionIncremental=1457895608
+        I/AndroidHardware: buildVersionRelease=5.1
+        I/AndroidHardware: buildVersionSecurityPatch=2016-01-01
+        I/AndroidHardware: buildVersionSDK=22
+        I/AndroidHardware: firmwareVersion=5.1
+     */
     public void getBuildHardware(){
         String buildBoard = HardwareUtils.getBuildBoard();
         LogUtils.i(String.format("buildBoard=%s",buildBoard));
