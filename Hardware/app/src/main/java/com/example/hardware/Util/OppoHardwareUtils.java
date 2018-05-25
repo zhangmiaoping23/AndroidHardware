@@ -32,7 +32,7 @@ public class OppoHardwareUtils {
             LogUtils.i(String.format("oppo locale=%s",locale));
         }
     }
-
+    //
     //此优先级高于HardwareUtils.getImei(Context context)
     public static String reflectColorImei(Context argContext) {
         String colorImei = null;

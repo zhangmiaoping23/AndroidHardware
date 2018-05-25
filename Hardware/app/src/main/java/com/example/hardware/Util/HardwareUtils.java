@@ -82,17 +82,21 @@ public class HardwareUtils {
     }
 
     public static String getBuildSerial(){
-        String buildSerial = "";
-        /*
-        try{
-            //此方法在compileSDKVersion=26才引入
-            buildSerial = Build.getSerial();
-        }catch (NoSuchMethodError exception){
-            buildSerial = Build.SERIAL;
+        String ret = "";
+        if(Build.VERSION.SDK_INT >= 26) {
+            try {
+                //ret = Build.getSerial();
+            }
+            catch(SecurityException exception) {
+                ret = "";
+            }
         }
-        */
-        buildSerial = Build.SERIAL;
-        return buildSerial;
+
+        if((null == ret) || (ret.isEmpty())){
+            ret = Build.SERIAL;
+        }
+
+        return ret;
     }
 
     public static String getBuildHardware(){

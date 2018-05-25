@@ -5,12 +5,13 @@ import android.graphics.Path;
 import android.os.Bundle;
 
 import com.example.hardware.Util.HardwareUtils;
+import com.example.hardware.Util.HuaweiHardwareUtils;
 import com.example.hardware.Util.LogUtils;
 import com.example.hardware.Util.OppoHardwareUtils;
 import com.example.hardware.Util.RuntimeUtils;
 import com.example.hardware.Util.SignatureUtils;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +26,7 @@ public class MainActivity extends Activity {
         LogUtils.i(String.format("userAgent=%s",userAgent));
 
         OppoHardwareUtils.getHardwares(this);
+        HuaweiHardwareUtils.getHardwares(this);
         setContentView(R.layout.activity_main);
     }
     /*
