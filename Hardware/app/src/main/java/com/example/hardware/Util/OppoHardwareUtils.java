@@ -6,9 +6,12 @@ import android.content.pm.PackageManager;
 import android.text.TextUtils;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URLEncoder;
 import java.util.Locale;
+
+import static org.joor.Reflect.on;
 
 public class OppoHardwareUtils {
     public static void getHardwares(Context context){
@@ -18,6 +21,15 @@ public class OppoHardwareUtils {
             //oppo机型特有的属性
             String mobileRomVersion = OppoHardwareUtils.getMobileRomVersion();
             LogUtils.i(String.format("oppo mobileRomVersion=%s",mobileRomVersion));
+
+            String colorOSVersion = OppoHardwareUtils.getColorOSVersion();
+            LogUtils.i(String.format("oppo colorOSVersion=%s",colorOSVersion));
+
+            boolean isColorOsV2 = OppoHardwareUtils.isColorOsV2();
+            LogUtils.i(String.format("oppo isColorOsV2=%b",isColorOsV2));
+
+            boolean isColorOsV3 = OppoHardwareUtils.isColorOsV3();
+            LogUtils.i(String.format("oppo isColorOsV3=%b",mobileRomVersion));
 
             String romName = OppoHardwareUtils.getRomName();
             LogUtils.i(String.format("oppo romName(ro.build.display.id)=%s",romName));
@@ -61,6 +73,13 @@ public class OppoHardwareUtils {
         return mobileRomVersion;
     }
 
+    public static String getColorOSVersion(){
+        //静态方法
+        int colorOSVersion = on("com.color.os.ColorBuild").call("getColorOSVERSION").get();
+        String ret = String.valueOf(colorOSVersion);
+        return ret;
+    }
+
     public static String getRomName() {
         String romName = "";
         try {
@@ -71,6 +90,36 @@ public class OppoHardwareUtils {
             exception.printStackTrace();
         }
         return romName;
+    }
+
+    public static boolean isColorOsV2() {
+        boolean ret = false;
+        String mobileRomVersion = getMobileRomVersion();
+        if(!TextUtils.isEmpty(((CharSequence)mobileRomVersion)) && ((mobileRomVersion.startsWith("v2")) || (mobileRomVersion.startsWith("V2")))) {
+            ret = true;
+        }
+
+        return ret;
+    }
+
+    public static boolean isColorOsV3() {
+        boolean ret = false;
+        String mobileRomVersion = getMobileRomVersion();  // V3.0.0
+        if(!TextUtils.isEmpty(((CharSequence)mobileRomVersion)) && mobileRomVersion.length() >= 2) {
+            char first = mobileRomVersion.charAt(0);
+            char second = mobileRomVersion.charAt(1);
+            if(first != 'v' && first != 'V') {  // 118=v / 86=V
+                return ret;
+            }
+
+            if(second != '3'  && second != '4' && second != '5') {  // 51=0x33=3 / 52=0x34=4 / 53=0x35=5 /
+                return ret;
+            }
+
+            ret = true;
+        }
+
+        return ret;
     }
 
     public static String getLocale() {
