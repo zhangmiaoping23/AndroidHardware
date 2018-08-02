@@ -25,4 +25,13 @@ public class SimCardUtils {
 
         return networkOperatorName;
     }
+
+    public static String getSimSerialNumber(Context context) {
+        String simSerialNumber = "";
+        TelephonyManager telephonyManager = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+        if(null != telephonyManager){
+            simSerialNumber = telephonyManager.getSimSerialNumber();
+        }
+        return simSerialNumber;
+    }
 }

@@ -23,13 +23,27 @@ public class MainActivity extends Activity{
         String macAddress = HardwareUtils.getMacAddress(hostAddress);
         LogUtils.i(String.format("macAddress=%s",macAddress));
 
+        String wifiIP = HardwareUtils.getWifiIP(this);
+        LogUtils.i(String.format("wifiIP=%s",wifiIP));
+
+        String wifiMacAddress = HardwareUtils.getWifiMacAddress(this);
+        LogUtils.i(String.format("wifiMacAddress=%s",wifiMacAddress));
+
+
         int runtimeType = RuntimeUtils.getRuntimeType();
         LogUtils.i(String.format("runtimeType=%s",String.valueOf(runtimeType)));
         getBuildHardware();
+
         String imei = HardwareUtils.getImei(this);
         LogUtils.i(String.format("telephonyManagerImei=%s",imei));
-        String androidId = HardwareUtils.getAndroidId(this);
-        LogUtils.i(String.format("androidId=%s",androidId));
+
+        String imsi = HardwareUtils.getImsi(this);
+        LogUtils.i(String.format("telephonyManagerImsi=%s",imsi));
+        String androidId = HardwareUtils.getAndroidId(this,HardwareUtils.SETTINGS_SYSTEM);
+        LogUtils.i(String.format("Settings.System.androidId=%s",androidId));
+
+       androidId = HardwareUtils.getAndroidId(this,HardwareUtils.SETTINGS_SECURE);
+        LogUtils.i(String.format("Settings.Secure.androidId=%s",androidId));
 
         String userAgent = HardwareUtils.getSystemUserAgent();
         LogUtils.i(String.format("userAgent=%s",userAgent));
