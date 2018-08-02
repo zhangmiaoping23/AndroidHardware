@@ -1,6 +1,7 @@
 package com.example.hardware.Util;
 import android.content.Context;
 import android.os.Build;
+import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -10,6 +11,9 @@ import android.view.WindowManager;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.Reader;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.util.Enumeration;
 import java.util.TimeZone;
 
 /**
@@ -19,6 +23,67 @@ import java.util.TimeZone;
 public class HardwareUtils {
     public static String getSystemUserAgent(){
         return System.getProperty("http.agent");
+    }
+
+    public static String getAndroidId(Context context){
+        String androidId = Settings.System.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+        return androidId;
+    }
+
+    public static String getHostAddress() {
+        String hostAddress = "";
+        InetAddress inetAddress;
+        try {
+            Enumeration<NetworkInterface> enumrationNetworkInterface = NetworkInterface.getNetworkInterfaces();
+            while(enumrationNetworkInterface.hasMoreElements()){
+                NetworkInterface networkInterface = enumrationNetworkInterface.nextElement();
+                Enumeration<InetAddress> enumrationInetAddress = networkInterface.getInetAddresses();
+                while(enumrationInetAddress.hasMoreElements()) {
+                    inetAddress = enumrationInetAddress.nextElement();
+                    if (inetAddress.isLoopbackAddress()) {
+                        continue;
+                    }
+
+                    /* networkInterface.getDisplayName() == eth1
+                    首先得到的是IPV6格式 fe80::a00:27ff:fe1b:f5db%eth1%3 ,可以考虑用inetAddress.getAddress()返回的字节数组长度等于16过滤掉
+                    然后才是IPV4的IP
+                    */
+
+                    /*
+                    在往后面
+                    networkInterface.getDisplayName() == wlan0
+                    首先得到的是IPV6格式 fe80::a00:27ff:fe1b:f5db%eth1%3 ,可以考虑用inetAddress.getAddress()返回的字节数组长度等于16过滤掉
+                    然后才是IPV4的IP
+                    */
+                    if(inetAddress.getAddress().length > 4){
+                        continue;
+                    }
+                    hostAddress = inetAddress.getHostAddress().toString();
+                    break;
+                }
+                if(!hostAddress.isEmpty()){
+                    break;
+                }
+            }
+        }
+        catch(Exception exception) {
+
+        }
+
+        return hostAddress;
+    }
+    public static String getMacAddress(String hostAddress){
+        String macAddress = "";
+        try {
+            InetAddress inetAddress = InetAddress.getByName(hostAddress);
+            NetworkInterface networkInterface = NetworkInterface.getByInetAddress(inetAddress);
+            macAddress = HexUtils.toHexString(networkInterface.getHardwareAddress());
+        }
+        catch(Exception v1) {
+            v1.printStackTrace();
+        }
+
+        return macAddress;
     }
 
     public static String getBuildBoard(){

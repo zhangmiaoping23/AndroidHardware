@@ -1,7 +1,6 @@
 package com.example.hardware;
 
 import android.app.Activity;
-import android.graphics.Path;
 import android.os.Bundle;
 
 import com.example.hardware.Util.HardwareUtils;
@@ -9,7 +8,9 @@ import com.example.hardware.Util.HuaweiHardwareUtils;
 import com.example.hardware.Util.LogUtils;
 import com.example.hardware.Util.OppoHardwareUtils;
 import com.example.hardware.Util.RuntimeUtils;
+import com.example.hardware.Util.SdcardUtils;
 import com.example.hardware.Util.SignatureUtils;
+import com.example.hardware.Util.SimCardUtils;
 
 public class MainActivity extends Activity{
 
@@ -17,14 +18,52 @@ public class MainActivity extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SignatureUtils.getSignatureHashCode(this);
+        String hostAddress = HardwareUtils.getHostAddress();
+        LogUtils.i(String.format("ip=%s",hostAddress));
+        String macAddress = HardwareUtils.getMacAddress(hostAddress);
+        LogUtils.i(String.format("macAddress=%s",macAddress));
+
         int runtimeType = RuntimeUtils.getRuntimeType();
         LogUtils.i(String.format("runtimeType=%s",String.valueOf(runtimeType)));
         getBuildHardware();
         String imei = HardwareUtils.getImei(this);
         LogUtils.i(String.format("telephonyManagerImei=%s",imei));
+        String androidId = HardwareUtils.getAndroidId(this);
+        LogUtils.i(String.format("androidId=%s",androidId));
+
         String userAgent = HardwareUtils.getSystemUserAgent();
         LogUtils.i(String.format("userAgent=%s",userAgent));
 
+        String sdcardName = SdcardUtils.getSdcardName();
+        LogUtils.i(String.format("厂商：sdcardName=%s",sdcardName));
+
+        String sdcardCid = SdcardUtils.getSdcardCid();
+        LogUtils.i(String.format("sdcard ID: sdcardCid=%s",sdcardCid));
+
+        String sdcardCsd = SdcardUtils.getSdcardCsd();
+        LogUtils.i(String.format("sdcardCsd=%s",sdcardCsd));
+
+        String sdcardFwrev = SdcardUtils.getSdcardFwrev();
+        LogUtils.i(String.format("固件编号： sdcardFwrev=%s",sdcardFwrev));
+
+        String sdcardHwrev = SdcardUtils.getSdcardHwrev();
+        LogUtils.i(String.format("硬件版本： sdcardHwrev=%s",sdcardHwrev));
+
+        String sdcardManfid = SdcardUtils.getSdcardManfid();
+        LogUtils.i(String.format("manufacture： sdcardManfid=%s",sdcardManfid));
+
+        String sdcardOemid = SdcardUtils.getSdcardOemid();
+        LogUtils.i(String.format("原始设备制造商： sdcardOemid=%s",sdcardOemid));
+
+        String sdcardScr = SdcardUtils.getSdcardScr();
+        LogUtils.i(String.format("sdcardScr=%s",sdcardScr));
+
+        String sdcardSerial = SdcardUtils.getSdcardSerial();
+        LogUtils.i(String.format("串号/序列号: sdcardSerial=%s",sdcardSerial));
+
+        String sdcardDate = SdcardUtils.getSdcardDate();
+        LogUtils.i(String.format("生产日期: sdcardDate=%s",sdcardDate));
+        //
         OppoHardwareUtils.getHardwares(this);
         HuaweiHardwareUtils.getHardwares(this);
         setContentView(R.layout.activity_main);
