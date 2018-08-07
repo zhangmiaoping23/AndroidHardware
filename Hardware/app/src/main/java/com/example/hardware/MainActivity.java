@@ -3,6 +3,7 @@ package com.example.hardware;
 import android.app.Activity;
 import android.os.Bundle;
 
+import com.example.hardware.Util.DisplayUtils;
 import com.example.hardware.Util.HardwareUtils;
 import com.example.hardware.Util.HuaweiHardwareUtils;
 import com.example.hardware.Util.LogUtils;
@@ -11,6 +12,7 @@ import com.example.hardware.Util.RuntimeUtils;
 import com.example.hardware.Util.SdcardUtils;
 import com.example.hardware.Util.SignatureUtils;
 import com.example.hardware.Util.SimCardUtils;
+import com.example.hardware.Util.WifiUtils;
 
 public class MainActivity extends Activity{
 
@@ -23,12 +25,17 @@ public class MainActivity extends Activity{
         String macAddress = HardwareUtils.getMacAddress(hostAddress);
         LogUtils.i(String.format("macAddress=%s",macAddress));
 
-        String wifiIP = HardwareUtils.getWifiIP(this);
+        String wifiIP = WifiUtils.getWifiIP(this);
         LogUtils.i(String.format("wifiIP=%s",wifiIP));
 
-        String wifiMacAddress = HardwareUtils.getWifiMacAddress(this);
+        String wifiMacAddress = WifiUtils.getWifiMacAddress(this);
         LogUtils.i(String.format("wifiMacAddress=%s",wifiMacAddress));
 
+        String wifiBSSID = WifiUtils.getBSSID(this);
+        LogUtils.i(String.format("wifiBSSID=%s",wifiBSSID));
+
+        String wifiSSID = WifiUtils.getSSID(this);
+        LogUtils.i(String.format("wifiSSID=%s",wifiSSID));
 
         int runtimeType = RuntimeUtils.getRuntimeType();
         LogUtils.i(String.format("runtimeType=%s",String.valueOf(runtimeType)));
@@ -38,7 +45,12 @@ public class MainActivity extends Activity{
         LogUtils.i(String.format("telephonyManagerImei=%s",imei));
 
         String imsi = HardwareUtils.getImsi(this);
-        LogUtils.i(String.format("telephonyManagerImsi=%s",imsi));
+        LogUtils.i(String.format("telephonyManagerImsi subscriberId=%s",imsi));
+
+        String simSerialNumber = HardwareUtils.getSimSerialNumber(this);
+        LogUtils.i(String.format("telephonyManager simSerialNumber=%s",imsi));
+
+
         String androidId = HardwareUtils.getAndroidId(this,HardwareUtils.SETTINGS_SYSTEM);
         LogUtils.i(String.format("Settings.System.androidId=%s",androidId));
 
@@ -77,7 +89,12 @@ public class MainActivity extends Activity{
 
         String sdcardDate = SdcardUtils.getSdcardDate();
         LogUtils.i(String.format("生产日期: sdcardDate=%s",sdcardDate));
-        //
+
+        String screenSize = DisplayUtils.getScreenSize(this);
+        LogUtils.i(String.format("screenSize=%s",screenSize));
+
+        int densityDpi = DisplayUtils.getDensityDpi(this);
+        LogUtils.i(String.format("densityDpi=%d",densityDpi));
         OppoHardwareUtils.getHardwares(this);
         HuaweiHardwareUtils.getHardwares(this);
         setContentView(R.layout.activity_main);

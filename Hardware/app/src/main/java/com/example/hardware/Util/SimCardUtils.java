@@ -34,4 +34,13 @@ public class SimCardUtils {
         }
         return simSerialNumber;
     }
+
+    public static String getSubscriberId(Context context){
+        String subscriberId = "";
+        TelephonyManager telephonyManager = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+        if(null != telephonyManager){
+            subscriberId = telephonyManager.getSubscriberId();
+        }
+        return subscriberId;
+    }
 }

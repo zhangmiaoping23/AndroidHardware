@@ -108,48 +108,6 @@ public class HardwareUtils {
         return macAddress;
     }
 
-    public static String getWifiIP(Context context){
-        String ip = "";
-        try {
-            WifiManager wifiManager = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
-            //SSID: TP-LINK_114, BSSID: f4:83:cd:93:eb:17, MAC: c8:f2:30:56:d9:3e, Supplicant state: COMPLETED, RSSI: -41, Link speed: 65Mbps, Frequency: 2437MHz, Net ID: 5, Metered hint: false, score: 79
-            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-            if(wifiInfo != null) {
-                ip = intToIp(wifiInfo.getIpAddress());
-            }
-        }
-        catch(Exception v1) {
-
-        }
-
-        return ip;
-    }
-
-    public static String intToIp(int ipInt) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(ipInt & 0xFF).append(".");
-        sb.append((ipInt >> 8) & 0xFF).append(".");
-        sb.append((ipInt >> 16) & 0xFF).append(".");
-        sb.append((ipInt >> 24) & 0xFF);
-        return sb.toString();
-    }
-
-    public static String getWifiMacAddress(Context context){
-        String macAddress = "";
-        try {
-            WifiManager wifiManager = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
-            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-            if(wifiInfo != null) {
-                macAddress = wifiInfo.getMacAddress();
-            }
-        }
-        catch(Exception v1) {
-
-        }
-
-        return macAddress;
-    }
-
     public static String getBuildBoard(){
         String buildBoard = Build.BOARD;
         return buildBoard;
@@ -337,9 +295,12 @@ public class HardwareUtils {
     }
 
     public static String getImsi(Context context){
-        return SimCardUtils.getSimSerialNumber(context);
+        return SimCardUtils.getSubscriberId(context);
     }
 
+    public static String getSimSerialNumber(Context context) {
+        return SimCardUtils.getSimSerialNumber(context);
+    }
     public static String getDensityDpi(Context context) {
         String densityDpi = "";
         DisplayMetrics displayMetrics = null;
