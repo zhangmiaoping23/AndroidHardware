@@ -34,12 +34,12 @@ public class HardwareUtils {
         switch (type){
             case SETTINGS_SYSTEM:
             {
-                androidId = Settings.System.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+                androidId = Settings.System.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);//af7a416984172e3a
             }
             break;
             case SETTINGS_SECURE:
             {
-                androidId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+                androidId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);//af7a416984172e3a
             }
             break;
         }
@@ -295,11 +295,11 @@ public class HardwareUtils {
     }
 
     public static String getImsi(Context context){
-        return SimCardUtils.getSubscriberId(context);
+        return SimCardUtils.getSubscriberId(context);//460015050112949
     }
 
     public static String getSimSerialNumber(Context context) {
-        return SimCardUtils.getSimSerialNumber(context);
+        return SimCardUtils.getSimSerialNumber(context);//89860117838006905255
     }
     public static String getDensityDpi(Context context) {
         String densityDpi = "";

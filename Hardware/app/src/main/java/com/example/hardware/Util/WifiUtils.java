@@ -10,7 +10,7 @@ import android.net.wifi.WifiManager;
 
 public class WifiUtils {
 
-    public static String getWifiIP(Context context){
+    public static String getConnectWifiIP(Context context){
         String ip = "";
         try {
             WifiManager wifiManager = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
@@ -36,7 +36,7 @@ public class WifiUtils {
         return sb.toString();
     }
 
-    public static String getWifiMacAddress(Context context){
+    public static String getConnectWifiMacAddress(Context context){
         String macAddress = "";
         try {
             WifiManager wifiManager = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
@@ -52,7 +52,7 @@ public class WifiUtils {
         return macAddress;
     }
 
-    public static String getBSSID(Context context){
+    public static String getConnectWifiBSSID(Context context){
         String bssid = "";
         try {
             WifiManager wifiManager = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
@@ -68,7 +68,7 @@ public class WifiUtils {
         return bssid;
     }
 
-    public static String getSSID(Context context){
+    public static String getConnectWifiSSID(Context context){
         String ssid = "";
         try {
             WifiManager wifiManager = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);

@@ -3,15 +3,17 @@ package com.example.hardware;
 import android.app.Activity;
 import android.os.Bundle;
 
+import com.example.hardware.Util.BuildPropFileUtils;
+import com.example.hardware.Util.CPUUtils;
 import com.example.hardware.Util.DisplayUtils;
 import com.example.hardware.Util.HardwareUtils;
 import com.example.hardware.Util.HuaweiHardwareUtils;
 import com.example.hardware.Util.LogUtils;
+import com.example.hardware.Util.MemUtils;
 import com.example.hardware.Util.OppoHardwareUtils;
 import com.example.hardware.Util.RuntimeUtils;
 import com.example.hardware.Util.SdcardUtils;
 import com.example.hardware.Util.SignatureUtils;
-import com.example.hardware.Util.SimCardUtils;
 import com.example.hardware.Util.WifiUtils;
 
 public class MainActivity extends Activity{
@@ -19,23 +21,39 @@ public class MainActivity extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        BuildPropFileUtils.getStaticInstance();
         SignatureUtils.getSignatureHashCode(this);
+        String cpuName = CPUUtils.getCpuName();
+        LogUtils.i(String.format("cpuName=%s",cpuName));
+
+        int cpuCoresNum = CPUUtils.getCpuCoresNum();
+        LogUtils.i(String.format("cpuCoresNum=%d",cpuCoresNum));
+
+        int cpuMaxFreq = CPUUtils.getCpuMaxFreq();
+        LogUtils.i(String.format("cpuMaxFreq=%d",cpuMaxFreq));
+
+        int cpuMinFreq = CPUUtils.getCpuMinFreq();
+        LogUtils.i(String.format("cpuMinFreq=%d",cpuMinFreq));
+
+        long RamTotalSize = MemUtils.getRamTotalSize();
+        LogUtils.i(String.format("RamTotalSize=%d \"MB\"",RamTotalSize));
+
         String hostAddress = HardwareUtils.getHostAddress();
         LogUtils.i(String.format("ip=%s",hostAddress));
         String macAddress = HardwareUtils.getMacAddress(hostAddress);
         LogUtils.i(String.format("macAddress=%s",macAddress));
 
-        String wifiIP = WifiUtils.getWifiIP(this);
-        LogUtils.i(String.format("wifiIP=%s",wifiIP));
+        String connectWifiIP = WifiUtils.getConnectWifiIP(this);
+        LogUtils.i(String.format("connectWifiIP=%s",connectWifiIP));
 
-        String wifiMacAddress = WifiUtils.getWifiMacAddress(this);
-        LogUtils.i(String.format("wifiMacAddress=%s",wifiMacAddress));
+        String connectWifiMacAddress = WifiUtils.getConnectWifiMacAddress(this);
+        LogUtils.i(String.format("connectWifiMacAddress=%s",connectWifiMacAddress));
 
-        String wifiBSSID = WifiUtils.getBSSID(this);
-        LogUtils.i(String.format("wifiBSSID=%s",wifiBSSID));
+        String connectWifiBSSID = WifiUtils.getConnectWifiBSSID(this);
+        LogUtils.i(String.format("connectWifiBSSID=%s",connectWifiBSSID));
 
-        String wifiSSID = WifiUtils.getSSID(this);
-        LogUtils.i(String.format("wifiSSID=%s",wifiSSID));
+        String connectWifiSSID = WifiUtils.getConnectWifiSSID(this);
+        LogUtils.i(String.format("connectWifiSSID=%s",connectWifiSSID));
 
         int runtimeType = RuntimeUtils.getRuntimeType();
         LogUtils.i(String.format("runtimeType=%s",String.valueOf(runtimeType)));
@@ -48,7 +66,7 @@ public class MainActivity extends Activity{
         LogUtils.i(String.format("telephonyManagerImsi subscriberId=%s",imsi));
 
         String simSerialNumber = HardwareUtils.getSimSerialNumber(this);
-        LogUtils.i(String.format("telephonyManager simSerialNumber=%s",imsi));
+        LogUtils.i(String.format("telephonyManager simSerialNumber=%s",simSerialNumber));
 
 
         String androidId = HardwareUtils.getAndroidId(this,HardwareUtils.SETTINGS_SYSTEM);
