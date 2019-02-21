@@ -19,11 +19,17 @@ public class HuaweiHardwareUtils {
             int emuiSdkInt = getEmuiSdkInt();
             LogUtils.i(String.format("huawei emuiSdkInt=%s",String.valueOf(emuiSdkInt)));
 
-            String emuiVersion = getEmuiVersion();
-            LogUtils.i(String.format("huawei emuiVersion=%s",emuiVersion));
+            String custVersion = getCustCVersion();
+            LogUtils.i(String.format("huawei custVersion=%s",custVersion));
+
+            String emuiVersionFromSystemProperties = getEmuiVersionFromSystemProperties();
+            LogUtils.i(String.format("huawei emuiVersionFromSystemProperties=%s",emuiVersionFromSystemProperties));
+
+            String emuiVersionFromBuildEx = getEmuiVersionFromBuildEx();
+            LogUtils.i(String.format("huawei emuiVersionFromBuildEx=%s",emuiVersionFromBuildEx));
 
             int emuiApiLevel = getEmuiApiLevel();
-            LogUtils.i(String.format("huawei emuiApiLevel=%s",emuiVersion));
+            LogUtils.i(String.format("huawei emuiApiLevel=%d",emuiApiLevel));
 
             String udid = getUDID();
             LogUtils.i(String.format("huawei udid=%s",udid));
@@ -96,7 +102,7 @@ public class HuaweiHardwareUtils {
         return emuiApiLevel;
     }
 
-    public static String getEmuiVersion(){
+    public static String getEmuiVersionFromBuildEx(){
         String emuiVersion = "";
         try {
             Class reflectClass = Class.forName("com.huawei.android.os.BuildEx");
@@ -107,6 +113,16 @@ public class HuaweiHardwareUtils {
         catch(Exception exception) {
             exception.printStackTrace();
         }
+        return emuiVersion;
+    }
+
+    public static String getCustCVersion() {
+        return SystemPropertiesUtils.get("ro.product.CustCVersion", "");
+    }
+
+    public static String getEmuiVersionFromSystemProperties(){
+        String emuiVersion = "";
+        emuiVersion = SystemPropertiesUtils.get("ro.build.version.emui","");
         return emuiVersion;
     }
 

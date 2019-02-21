@@ -1,18 +1,23 @@
 package com.example.hardware.Util;
 
+import org.joor.Reflect;
+import org.joor.ReflectException;
+
 /**
  * Created by zhangmp on 2018/5/15.
  */
 
 public class SystemPropertiesUtils {
-    /*
-    public static String a_get(String argKey, String argDefaultValue) {
+
+    public static String get(String key, String defaultValue) {
+        String value;
         try {
-            Class systemPropertiesClass = Class.forName("android.os.SystemProperties");
-        } catch (ClassNotFoundException e) {
+            value = Reflect.on("android.os.SystemProperties")
+                    .call("get", key, defaultValue).get();
+        } catch (ReflectException e) {
             e.printStackTrace();
+            value = "";
         }
-        return ReflectHelp.invokeStatic(systemPropertiesClass, "get", new Class[]{String.class, String.class}, new Object[]{argKey, argDefaultValue});
+        return value;
     }
-    */
 }

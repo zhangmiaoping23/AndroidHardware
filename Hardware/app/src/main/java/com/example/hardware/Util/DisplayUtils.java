@@ -46,4 +46,12 @@ public class DisplayUtils {
 
         return densityDpi;
     }
+
+    public static void getInfo(Context context){
+        String screenSize = DisplayUtils.getScreenSize(context);
+        LogUtils.i(String.format("screenSize=%s",screenSize));
+
+        int densityDpi = DisplayUtils.getDensityDpi(context);
+        LogUtils.i(String.format("densityDpi=%d",densityDpi));
+    }
 }

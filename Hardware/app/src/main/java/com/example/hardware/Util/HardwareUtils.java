@@ -1,7 +1,5 @@
 package com.example.hardware.Util;
 import android.content.Context;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
@@ -10,9 +8,6 @@ import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.WindowManager;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.Reader;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.Enumeration;
@@ -44,11 +39,6 @@ public class HardwareUtils {
             break;
         }
 
-        return androidId;
-    }
-
-    public static String getAndroidId(Context context){
-        String androidId = Settings.System.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
         return androidId;
     }
 
@@ -376,4 +366,32 @@ public class HardwareUtils {
         return nullStr;
     }
     */
+
+    public static void getInfo(Context context){
+        String hostAddress = HardwareUtils.getHostAddress();
+        LogUtils.i(String.format("ip=%s",hostAddress));
+
+        String macAddress = HardwareUtils.getMacAddress(hostAddress);
+        LogUtils.i(String.format("macAddress=%s",macAddress));
+
+        String imei = HardwareUtils.getImei(context);
+        LogUtils.i(String.format("telephonyManagerImei=%s",imei));
+
+        String imsi = HardwareUtils.getImsi(context);
+        LogUtils.i(String.format("telephonyManagerImsi subscriberId=%s",imsi));
+
+        String simSerialNumber = HardwareUtils.getSimSerialNumber(context);
+        LogUtils.i(String.format("telephonyManager simSerialNumber=%s",simSerialNumber));
+
+
+        String androidId = HardwareUtils.getAndroidId(context,HardwareUtils.SETTINGS_SYSTEM);
+        LogUtils.i(String.format("Settings.System.androidId=%s",androidId));
+
+        androidId = HardwareUtils.getAndroidId(context,HardwareUtils.SETTINGS_SECURE);
+        LogUtils.i(String.format("Settings.Secure.androidId=%s",androidId));
+
+        String userAgent = HardwareUtils.getSystemUserAgent();
+        LogUtils.i(String.format("userAgent=%s",userAgent));
+
+    }
 }

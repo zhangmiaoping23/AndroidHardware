@@ -182,4 +182,43 @@ public class SdcardUtils {
 
 
     public static String sdcardDevicePath = "";
+
+    public static void getInfo(){
+        //厂商
+        String sdcardName = SdcardUtils.getSdcardName();
+        LogUtils.i(String.format("manufactor：sdcardName=%s",sdcardName));
+
+        String sdcardCid = SdcardUtils.getSdcardCid();
+        LogUtils.i(String.format("sdcard ID: sdcardCid=%s",sdcardCid));
+
+        String sdcardCsd = SdcardUtils.getSdcardCsd();
+        LogUtils.i(String.format("sdcardCsd=%s",sdcardCsd));
+
+        //固件编号
+        String sdcardFwrev = SdcardUtils.getSdcardFwrev();
+        LogUtils.i(String.format("fireware version： sdcardFwrev=%s",sdcardFwrev));
+
+        //硬件版本
+        String sdcardHwrev = SdcardUtils.getSdcardHwrev();
+        LogUtils.i(String.format("hardware version： sdcardHwrev=%s",sdcardHwrev));
+
+        String sdcardManfid = SdcardUtils.getSdcardManfid();
+        LogUtils.i(String.format("manufacture： sdcardManfid=%s",sdcardManfid));
+
+        //原始设备制造商
+        String sdcardOemid = SdcardUtils.getSdcardOemid();
+        LogUtils.i(String.format("original oem： sdcardOemid=%s",sdcardOemid));
+
+        String sdcardScr = SdcardUtils.getSdcardScr();
+        LogUtils.i(String.format("sdcardScr=%s",sdcardScr));
+
+        //串号/序列号
+        String sdcardSerial = SdcardUtils.getSdcardSerial();
+        LogUtils.i(String.format("Serial Number: sdcardSerial=%s",sdcardSerial));
+
+        //生产日期
+        String sdcardDate = SdcardUtils.getSdcardDate();
+        LogUtils.i(String.format("build date: sdcardDate=%s",sdcardDate));
+
+    }
 }

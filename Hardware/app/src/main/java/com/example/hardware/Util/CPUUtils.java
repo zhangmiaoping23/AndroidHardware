@@ -176,6 +176,20 @@ public class CPUUtils {
         }
         return minFreq;
     }
+
+    public static void getInfo(){
+        String cpuName = CPUUtils.getCpuName();
+        LogUtils.i(String.format("cpuName=%s",cpuName));
+
+        int cpuCoresNum = CPUUtils.getCpuCoresNum();
+        LogUtils.i(String.format("cpuCoresNum=%d",cpuCoresNum));
+
+        int cpuMaxFreq = CPUUtils.getCpuMaxFreq();
+        LogUtils.i(String.format("cpuMaxFreq=%d",cpuMaxFreq));
+
+        int cpuMinFreq = CPUUtils.getCpuMinFreq();
+        LogUtils.i(String.format("cpuMinFreq=%d",cpuMinFreq));
+    }
 }
 
 class CpuFileFilter implements FileFilter {

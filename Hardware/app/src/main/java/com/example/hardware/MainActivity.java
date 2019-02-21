@@ -14,6 +14,7 @@ import com.example.hardware.Util.OppoHardwareUtils;
 import com.example.hardware.Util.RuntimeUtils;
 import com.example.hardware.Util.SdcardUtils;
 import com.example.hardware.Util.SignatureUtils;
+import com.example.hardware.Util.SimCardUtils;
 import com.example.hardware.Util.WifiUtils;
 
 public class MainActivity extends Activity{
@@ -23,25 +24,11 @@ public class MainActivity extends Activity{
         super.onCreate(savedInstanceState);
         BuildPropFileUtils.getStaticInstance();
         SignatureUtils.getSignatureHashCode(this);
-        String cpuName = CPUUtils.getCpuName();
-        LogUtils.i(String.format("cpuName=%s",cpuName));
 
-        int cpuCoresNum = CPUUtils.getCpuCoresNum();
-        LogUtils.i(String.format("cpuCoresNum=%d",cpuCoresNum));
-
-        int cpuMaxFreq = CPUUtils.getCpuMaxFreq();
-        LogUtils.i(String.format("cpuMaxFreq=%d",cpuMaxFreq));
-
-        int cpuMinFreq = CPUUtils.getCpuMinFreq();
-        LogUtils.i(String.format("cpuMinFreq=%d",cpuMinFreq));
+        CPUUtils.getInfo();
 
         long RamTotalSize = MemUtils.getRamTotalSize();
         LogUtils.i(String.format("RamTotalSize=%d \"MB\"",RamTotalSize));
-
-        String hostAddress = HardwareUtils.getHostAddress();
-        LogUtils.i(String.format("ip=%s",hostAddress));
-        String macAddress = HardwareUtils.getMacAddress(hostAddress);
-        LogUtils.i(String.format("macAddress=%s",macAddress));
 
         String connectWifiIP = WifiUtils.getConnectWifiIP(this);
         LogUtils.i(String.format("connectWifiIP=%s",connectWifiIP));
@@ -59,60 +46,14 @@ public class MainActivity extends Activity{
         LogUtils.i(String.format("runtimeType=%s",String.valueOf(runtimeType)));
         getBuildHardware();
 
-        String imei = HardwareUtils.getImei(this);
-        LogUtils.i(String.format("telephonyManagerImei=%s",imei));
+        HardwareUtils.getInfo(this);
 
-        String imsi = HardwareUtils.getImsi(this);
-        LogUtils.i(String.format("telephonyManagerImsi subscriberId=%s",imsi));
+        SdcardUtils.getInfo();
 
-        String simSerialNumber = HardwareUtils.getSimSerialNumber(this);
-        LogUtils.i(String.format("telephonyManager simSerialNumber=%s",simSerialNumber));
+        SimCardUtils.getInfo(this);
 
+        DisplayUtils.getInfo(this);
 
-        String androidId = HardwareUtils.getAndroidId(this,HardwareUtils.SETTINGS_SYSTEM);
-        LogUtils.i(String.format("Settings.System.androidId=%s",androidId));
-
-       androidId = HardwareUtils.getAndroidId(this,HardwareUtils.SETTINGS_SECURE);
-        LogUtils.i(String.format("Settings.Secure.androidId=%s",androidId));
-
-        String userAgent = HardwareUtils.getSystemUserAgent();
-        LogUtils.i(String.format("userAgent=%s",userAgent));
-
-        String sdcardName = SdcardUtils.getSdcardName();
-        LogUtils.i(String.format("厂商：sdcardName=%s",sdcardName));
-
-        String sdcardCid = SdcardUtils.getSdcardCid();
-        LogUtils.i(String.format("sdcard ID: sdcardCid=%s",sdcardCid));
-
-        String sdcardCsd = SdcardUtils.getSdcardCsd();
-        LogUtils.i(String.format("sdcardCsd=%s",sdcardCsd));
-
-        String sdcardFwrev = SdcardUtils.getSdcardFwrev();
-        LogUtils.i(String.format("固件编号： sdcardFwrev=%s",sdcardFwrev));
-
-        String sdcardHwrev = SdcardUtils.getSdcardHwrev();
-        LogUtils.i(String.format("硬件版本： sdcardHwrev=%s",sdcardHwrev));
-
-        String sdcardManfid = SdcardUtils.getSdcardManfid();
-        LogUtils.i(String.format("manufacture： sdcardManfid=%s",sdcardManfid));
-
-        String sdcardOemid = SdcardUtils.getSdcardOemid();
-        LogUtils.i(String.format("原始设备制造商： sdcardOemid=%s",sdcardOemid));
-
-        String sdcardScr = SdcardUtils.getSdcardScr();
-        LogUtils.i(String.format("sdcardScr=%s",sdcardScr));
-
-        String sdcardSerial = SdcardUtils.getSdcardSerial();
-        LogUtils.i(String.format("串号/序列号: sdcardSerial=%s",sdcardSerial));
-
-        String sdcardDate = SdcardUtils.getSdcardDate();
-        LogUtils.i(String.format("生产日期: sdcardDate=%s",sdcardDate));
-
-        String screenSize = DisplayUtils.getScreenSize(this);
-        LogUtils.i(String.format("screenSize=%s",screenSize));
-
-        int densityDpi = DisplayUtils.getDensityDpi(this);
-        LogUtils.i(String.format("densityDpi=%d",densityDpi));
         OppoHardwareUtils.getHardwares(this);
         HuaweiHardwareUtils.getHardwares(this);
         setContentView(R.layout.activity_main);

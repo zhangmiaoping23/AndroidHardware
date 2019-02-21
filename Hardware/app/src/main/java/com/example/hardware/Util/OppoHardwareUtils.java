@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.text.TextUtils;
 
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URLEncoder;
 import java.util.Locale;
@@ -42,9 +41,6 @@ public class OppoHardwareUtils {
 
             String locale = getLocale();
             LogUtils.i(String.format("oppo locale=%s",locale));
-
-            String carrierName = getCarrierName(context);
-            LogUtils.i(String.format("oppo carrierName=%s",carrierName));
         }
     }
     //
@@ -138,24 +134,6 @@ public class OppoHardwareUtils {
         String ret = locale.getLanguage() + "-" + locale.getCountry();                           // language="zh" Country="CN"
         if(!TextUtils.isEmpty(((CharSequence)oppoRegion))) {
             ret = ret + ";" + oppoRegion;
-        }
-
-        return ret;
-    }
-
-    public static String getCarrierName(Context argContext) {
-        String networkOperatorName = SimCardUtils.getOperator(argContext).toLowerCase();
-        String ret = "none";
-        if((networkOperatorName.equals("中国移动")) || (networkOperatorName.equals("china mobile")) || (networkOperatorName.equals("chinamobile"))) {
-            ret = "China Mobile";
-        }
-        else if(networkOperatorName.equals("中国联通") || networkOperatorName.equals("china unicom") || networkOperatorName.equals("chinaunicom")) {
-            ret = "China Unicom";
-        }
-        else if(networkOperatorName.equals("中国电信") || networkOperatorName.equals("china net") || networkOperatorName.equals("chinanet")) {
-            ret = "China Net";
-        }else{
-
         }
 
         return ret;
