@@ -4,9 +4,6 @@ import android.os.Build;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
-import android.view.Display;
-import android.view.WindowManager;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -291,23 +288,6 @@ public class HardwareUtils {
     public static String getSimSerialNumber(Context context) {
         return SimCardUtils.getSimSerialNumber(context);//89860117838006905255
     }
-    public static String getDensityDpi(Context context) {
-        String densityDpi = "";
-        DisplayMetrics displayMetrics = null;
-        WindowManager windowManager = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
-        if(windowManager != null) {
-            Display display = windowManager.getDefaultDisplay();
-            if(display != null) {
-                displayMetrics = new DisplayMetrics();
-                display.getRealMetrics(displayMetrics);
-                if(displayMetrics != null) {
-                    densityDpi = String.valueOf(displayMetrics.densityDpi);
-                }
-            }
-        }
-
-        return densityDpi;
-    }
 
     public static String getTimeZone(){
         String timeZone = TimeZone.getDefault().getID();
@@ -368,12 +348,6 @@ public class HardwareUtils {
     */
 
     public static void getInfo(Context context){
-        String hostAddress = HardwareUtils.getHostAddress();
-        LogUtils.i(String.format("ip=%s",hostAddress));
-
-        String macAddress = HardwareUtils.getMacAddress(hostAddress);
-        LogUtils.i(String.format("macAddress=%s",macAddress));
-
         String imei = HardwareUtils.getImei(context);
         LogUtils.i(String.format("telephonyManagerImei=%s",imei));
 
@@ -383,15 +357,23 @@ public class HardwareUtils {
         String simSerialNumber = HardwareUtils.getSimSerialNumber(context);
         LogUtils.i(String.format("telephonyManager simSerialNumber=%s",simSerialNumber));
 
-
         String androidId = HardwareUtils.getAndroidId(context,HardwareUtils.SETTINGS_SYSTEM);
         LogUtils.i(String.format("Settings.System.androidId=%s",androidId));
 
         androidId = HardwareUtils.getAndroidId(context,HardwareUtils.SETTINGS_SECURE);
         LogUtils.i(String.format("Settings.Secure.androidId=%s",androidId));
 
+        String timeZone = HardwareUtils.getTimeZone();
+        LogUtils.i(String.format("timeZone=%s",androidId));
+
         String userAgent = HardwareUtils.getSystemUserAgent();
         LogUtils.i(String.format("userAgent=%s",userAgent));
+
+        String hostAddress = HardwareUtils.getHostAddress();
+        LogUtils.i(String.format("ip=%s",hostAddress));
+
+        String macAddress = HardwareUtils.getMacAddress(hostAddress);
+        LogUtils.i(String.format("macAddress=%s",macAddress));
 
     }
 }

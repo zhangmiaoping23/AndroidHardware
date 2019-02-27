@@ -20,4 +20,16 @@ public class SystemPropertiesUtils {
         }
         return value;
     }
+
+    public static int getInt(String key, int defaultValue) {
+        int value;
+        try {
+            value = Reflect.on("android.os.SystemProperties")
+                    .call("getInt", key, defaultValue).get();
+        } catch (ReflectException e) {
+            e.printStackTrace();
+            value = 0;
+        }
+        return value;
+    }
 }

@@ -32,16 +32,19 @@ public class DisplayUtils {
         return screenSize;
     }
 
-    public static int getDensityDpi(Context context) {
-        int densityDpi = 0;
-        try {
-            WindowManager windowManager = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
+    public static String getDensityDpi(Context context) {
+        String densityDpi = "";
+        DisplayMetrics displayMetrics = null;
+        WindowManager windowManager = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
+        if(windowManager != null) {
             Display display = windowManager.getDefaultDisplay();
-            DisplayMetrics displayMetrics = new DisplayMetrics();
-            display.getMetrics(displayMetrics);
-            densityDpi = displayMetrics.densityDpi;
-        }
-        catch(Exception v0) {
+            if(display != null) {
+                displayMetrics = new DisplayMetrics();
+                display.getRealMetrics(displayMetrics);
+                if(displayMetrics != null) {
+                    densityDpi = String.valueOf(displayMetrics.densityDpi);
+                }
+            }
         }
 
         return densityDpi;
@@ -51,7 +54,7 @@ public class DisplayUtils {
         String screenSize = DisplayUtils.getScreenSize(context);
         LogUtils.i(String.format("screenSize=%s",screenSize));
 
-        int densityDpi = DisplayUtils.getDensityDpi(context);
-        LogUtils.i(String.format("densityDpi=%d",densityDpi));
+        String densityDpi = DisplayUtils.getDensityDpi(context);
+        LogUtils.i(String.format("densityDpi=%s",densityDpi));
     }
 }

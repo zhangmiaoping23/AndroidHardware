@@ -182,7 +182,12 @@ public class SimCardUtils {
         LogUtils.i(String.format("SimCardUtils networkOperator=%s mcc=%s mnc=%s",networkOperator,mcc,mnc));
 
         String subscriberId = SimCardUtils.getSubscriberId(context);
-        LogUtils.i(String.format("SimCardUtils subscriberId=%s",subscriberId));
+        if(subscriberId == null){
+            LogUtils.i("SimCardUtils subscriberId=null ");
+        }else{
+            LogUtils.i(String.format("SimCardUtils subscriberId=%s mcc=%s mnc=%s",subscriberId,subscriberId.substring(0,3),subscriberId.substring(3,5)));
+        }
+
     }
 
 }

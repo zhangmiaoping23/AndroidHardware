@@ -4,9 +4,12 @@ import android.content.Context;
 import android.os.SystemProperties;
 import android.text.TextUtils;
 
+import org.joor.Reflect;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.sql.Ref;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -16,23 +19,26 @@ public class HuaweiHardwareUtils {
         String manufacturer = HardwareUtils.getBuildManufacturer();
         manufacturer = manufacturer.toLowerCase();
         if(manufacturer.contains("huawei")){
-            int emuiSdkInt = getEmuiSdkInt();
-            LogUtils.i(String.format("huawei emuiSdkInt=%s",String.valueOf(emuiSdkInt)));
+            String huaweiBuildExUDID = getHuaweiBuildExUDID();
+            LogUtils.i(String.format("huawei huaweiBuildExUDID=%s",huaweiBuildExUDID));
 
-            String custVersion = getCustCVersion();
-            LogUtils.i(String.format("huawei custVersion=%s",custVersion));
+            int emuiSdkIntFromBuildEx = getEmuiSdkIntFromBuildEx();
+            LogUtils.i(String.format("huawei emuiSdkIntFromBuildEx=%s",String.valueOf(emuiSdkIntFromBuildEx)));
 
-            String emuiVersionFromSystemProperties = getEmuiVersionFromSystemProperties();
-            LogUtils.i(String.format("huawei emuiVersionFromSystemProperties=%s",emuiVersionFromSystemProperties));
+            int emuiSdkIntFromSystemProperties = getEmuiSdkIntFromSystemProperties();
+            LogUtils.i(String.format("huawei emuiSdkIntFromSystemProperties=%s",String.valueOf(emuiSdkIntFromSystemProperties)));
 
             String emuiVersionFromBuildEx = getEmuiVersionFromBuildEx();
             LogUtils.i(String.format("huawei emuiVersionFromBuildEx=%s",emuiVersionFromBuildEx));
 
+            String emuiVersionFromSystemProperties = getEmuiVersionFromSystemProperties();
+            LogUtils.i(String.format("huawei emuiVersionFromSystemProperties=%s",emuiVersionFromSystemProperties));
+
             int emuiApiLevel = getEmuiApiLevel();
             LogUtils.i(String.format("huawei emuiApiLevel=%d",emuiApiLevel));
 
-            String udid = getUDID();
-            LogUtils.i(String.format("huawei udid=%s",udid));
+            String custVersion = getCustCVersion();
+            LogUtils.i(String.format("huawei custVersion=%s",custVersion));
         }
     }
 
@@ -63,13 +69,21 @@ public class HuaweiHardwareUtils {
         return emuiApiLevel;
     }
 
-    public static int getEmuiSdkInt(){
+    public static int getEmuiSdkIntFromBuildEx(){
         int emuiSdkInt = 0;
         try {
-            Class reflectClass = Class.forName("com.huawei.android.os.BuildEx$VERSION");
-            Field field = reflectClass.getField("EMUI_SDK_INT");
-            Object value = field.get(null);
-            emuiSdkInt = (int)value;
+            emuiSdkInt =  Reflect.on("com.huawei.android.os.BuildEx$VERSION").field("EMUI_SDK_INT").get();
+        }
+        catch(Exception exception) {
+            exception.printStackTrace();
+        }
+        return emuiSdkInt;
+    }
+
+    public static int getEmuiSdkIntFromSystemProperties(){
+        int emuiSdkInt = 0;
+        try {
+            emuiSdkInt =  SystemPropertiesUtils.getInt("ro.build.hw_emui_api_level",0);
         }
         catch(Exception exception) {
             exception.printStackTrace();
@@ -126,11 +140,11 @@ public class HuaweiHardwareUtils {
         return emuiVersion;
     }
 
-    public static String getUDID(){
+    public static String getHuaweiBuildExUDID(){
         String udid = null;
         try {
             Class reflectClass = Class.forName("com.huawei.android.os.BuildEx");
-            Method reflectMethod = reflectClass.getMethod("getUDID");
+            Method reflectMethod = reflectClass.getMethod("getHuaweiBuildExUDID");
             Object object = reflectMethod.invoke(null, new Object[0]);
             udid = (String)object;
         } catch(InvocationTargetException exception) {
