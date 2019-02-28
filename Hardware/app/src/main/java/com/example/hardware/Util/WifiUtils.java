@@ -83,4 +83,20 @@ public class WifiUtils {
 
         return ssid;
     }
+    public static String getInfo(Context context) {
+        String logInfo = "";
+        String connectWifiIP = WifiUtils.getConnectWifiIP(context);
+        logInfo = LogUtils.record(logInfo,String.format("connectWifiIP=%s", connectWifiIP));
+
+        String connectWifiMacAddress = WifiUtils.getConnectWifiMacAddress(context);
+        logInfo = LogUtils.record(logInfo,String.format("connectWifiMacAddress=%s", connectWifiMacAddress));
+
+        String connectWifiBSSID = WifiUtils.getConnectWifiBSSID(context);
+        logInfo = LogUtils.record(logInfo,String.format("connectWifiBSSID=%s", connectWifiBSSID));
+
+        String connectWifiSSID = WifiUtils.getConnectWifiSSID(context);
+        logInfo = LogUtils.record(logInfo,String.format("connectWifiSSID=%s", connectWifiSSID));
+        return logInfo;
+    }
+
 }

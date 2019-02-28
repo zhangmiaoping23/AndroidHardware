@@ -177,18 +177,25 @@ public class CPUUtils {
         return minFreq;
     }
 
-    public static void getInfo(){
+    public static String getInfo(){
+        String logInfo = "";
+        String tmp = "";
         String cpuName = CPUUtils.getCpuName();
-        LogUtils.i(String.format("cpuName=%s",cpuName));
+        tmp = String.format("cpuName=%s",cpuName);
+        logInfo = LogUtils.record(logInfo,tmp);
 
         int cpuCoresNum = CPUUtils.getCpuCoresNum();
-        LogUtils.i(String.format("cpuCoresNum=%d",cpuCoresNum));
+        tmp = String.format("cpuCoresNum=%d",cpuCoresNum);
+        logInfo = LogUtils.record(logInfo,tmp);
 
         int cpuMaxFreq = CPUUtils.getCpuMaxFreq();
-        LogUtils.i(String.format("cpuMaxFreq=%d",cpuMaxFreq));
+        tmp = String.format("cpuMaxFreq=%d",cpuMaxFreq);
+        logInfo = LogUtils.record(logInfo,tmp);
 
         int cpuMinFreq = CPUUtils.getCpuMinFreq();
-        LogUtils.i(String.format("cpuMinFreq=%d",cpuMinFreq));
+        tmp = String.format("cpuMinFreq=%d",cpuMinFreq);
+        logInfo = LogUtils.record(logInfo,tmp);
+        return logInfo;
     }
 }
 

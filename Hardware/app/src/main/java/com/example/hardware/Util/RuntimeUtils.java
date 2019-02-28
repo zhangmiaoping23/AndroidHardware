@@ -40,5 +40,10 @@ public class RuntimeUtils {
 
         return ret;
     }
-
+    public static String getInfo() {
+        String logInfo = "";
+        int runtimeType = RuntimeUtils.getRuntimeType();
+        logInfo = LogUtils.record(logInfo,String.format("runtimeType=%s",String.valueOf(runtimeType)));
+        return logInfo;
+    }
 }

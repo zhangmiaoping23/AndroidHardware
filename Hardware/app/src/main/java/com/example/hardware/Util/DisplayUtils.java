@@ -50,11 +50,13 @@ public class DisplayUtils {
         return densityDpi;
     }
 
-    public static void getInfo(Context context){
+    public static String getInfo(Context context){
+        String logInfo = "";
         String screenSize = DisplayUtils.getScreenSize(context);
-        LogUtils.i(String.format("screenSize=%s",screenSize));
+        logInfo = LogUtils.record(logInfo,String.format("screenSize=%s",screenSize));
 
         String densityDpi = DisplayUtils.getDensityDpi(context);
-        LogUtils.i(String.format("densityDpi=%s",densityDpi));
+        logInfo = LogUtils.record(logInfo,String.format("densityDpi=%s",densityDpi));
+        return logInfo;
     }
 }

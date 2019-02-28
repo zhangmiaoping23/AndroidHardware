@@ -81,4 +81,16 @@ public class MemUtils {
         }
         return RamTotalSize;
     }
+
+    public static String getInfo() {
+        String logInfo = "";
+        String tmp = "";
+
+        long RamTotalSize = MemUtils.getRamTotalSize();
+        tmp = String.format("RamTotalSize=%d \"MB\"",RamTotalSize);
+        logInfo = LogUtils.record(logInfo,tmp);
+
+        return logInfo;
+
+    }
 }

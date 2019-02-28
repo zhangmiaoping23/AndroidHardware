@@ -346,34 +346,160 @@ public class HardwareUtils {
         return nullStr;
     }
     */
-
-    public static void getInfo(Context context){
+    public static String getInfo(Context context){
+        String logInfo = "";
+        logInfo = getBuildInfo();
         String imei = HardwareUtils.getImei(context);
-        LogUtils.i(String.format("telephonyManagerImei=%s",imei));
+        logInfo = LogUtils.record(logInfo,String.format("telephonyManagerImei=%s",imei));
 
         String imsi = HardwareUtils.getImsi(context);
-        LogUtils.i(String.format("telephonyManagerImsi subscriberId=%s",imsi));
+        logInfo = LogUtils.record(logInfo,String.format("telephonyManagerImsi subscriberId=%s",imsi));
 
         String simSerialNumber = HardwareUtils.getSimSerialNumber(context);
-        LogUtils.i(String.format("telephonyManager simSerialNumber=%s",simSerialNumber));
+        logInfo = LogUtils.record(logInfo,String.format("telephonyManager simSerialNumber=%s",simSerialNumber));
 
         String androidId = HardwareUtils.getAndroidId(context,HardwareUtils.SETTINGS_SYSTEM);
-        LogUtils.i(String.format("Settings.System.androidId=%s",androidId));
+        logInfo = LogUtils.record(logInfo,String.format("Settings.System.androidId=%s",androidId));
 
         androidId = HardwareUtils.getAndroidId(context,HardwareUtils.SETTINGS_SECURE);
-        LogUtils.i(String.format("Settings.Secure.androidId=%s",androidId));
+        logInfo = LogUtils.record(logInfo,String.format("Settings.Secure.androidId=%s",androidId));
 
         String timeZone = HardwareUtils.getTimeZone();
-        LogUtils.i(String.format("timeZone=%s",androidId));
+        logInfo = LogUtils.record(logInfo,String.format("timeZone=%s",timeZone));
 
         String userAgent = HardwareUtils.getSystemUserAgent();
-        LogUtils.i(String.format("userAgent=%s",userAgent));
+        logInfo = LogUtils.record(logInfo,String.format("userAgent=%s",userAgent));
 
         String hostAddress = HardwareUtils.getHostAddress();
-        LogUtils.i(String.format("ip=%s",hostAddress));
+        logInfo = LogUtils.record(logInfo,String.format("ip=%s",hostAddress));
 
         String macAddress = HardwareUtils.getMacAddress(hostAddress);
-        LogUtils.i(String.format("macAddress=%s",macAddress));
-
+        logInfo = LogUtils.record(logInfo,String.format("macAddress=%s",macAddress));
+        return logInfo;
     }
+
+    /*
+    例子一：
+        I/AndroidHardware: buildBoard=full_oppo6755_15111
+        I/AndroidHardware: buildBootloader=unknown
+        I/AndroidHardware: buildBrand=OPPO
+        I/AndroidHardware: buildCpuApi=arm64-v8a
+        I/AndroidHardware: buildCpuApi2=
+        I/AndroidHardware: SupportAbi0=arm64-v8a
+        I/AndroidHardware: SupportAbi1=armeabi-v7a
+        I/AndroidHardware: SupportAbi2=armeabi
+        I/AndroidHardware: buildDevice=R9
+        I/AndroidHardware: buildDisplay=R9m_11_A.13_160314
+        I/AndroidHardware: buildFingerPrint=OPPO/R9m/R9:5.1/LMY47I/1449641681:user/release-keys
+        I/AndroidHardware: buildRadioVersion=MOLY.LR11.W1539.MD.MP.V9.P36.T36, 2016/03/12 23:22
+        I/AndroidHardware: buildSerial=IRFMW8CMLFFASGGY
+        I/AndroidHardware: buildHardware=mt6755
+        I/AndroidHardware: buildHost=ubuntu-121-109
+        I/AndroidHardware: buildId=LMY47I
+        I/AndroidHardware: buildManufacturer=OPPO
+        I/AndroidHardware: buildModel=OPPO R9m
+        I/AndroidHardware: buildProduct=R9m
+        I/AndroidHardware: buildTags=dev-keys
+        I/AndroidHardware: buildTime=1457895750000
+        I/AndroidHardware: buildType=user
+        I/AndroidHardware: buildUser=root
+        I/AndroidHardware: buildVersionBaseOS=OPPO/R9m/R9:5.1/LMY47I/1449641681:user/release-keys
+        I/AndroidHardware: buildVersionCodeName=REL
+        I/AndroidHardware: buildVersionIncremental=1457895608
+        I/AndroidHardware: buildVersionRelease=5.1
+        I/AndroidHardware: buildVersionSecurityPatch=2016-01-01
+        I/AndroidHardware: buildVersionSDK=22
+        I/AndroidHardware: firmwareVersion=5.1
+     */
+    public static String  getBuildInfo(){
+        String logInfo = "";
+        String buildBoard = HardwareUtils.getBuildBoard();
+        logInfo = LogUtils.record(logInfo,String.format("buildBoard=%s",buildBoard));
+
+        String buildBootloader = HardwareUtils.getBuildBootLoader();
+        logInfo = LogUtils.record(logInfo,String.format("buildBootloader=%s",buildBootloader));
+
+        String buildBrand = HardwareUtils.getBuildBrand();
+        logInfo = LogUtils.record(logInfo,String.format("buildBrand=%s",buildBrand));
+
+        String buildCpuApi = HardwareUtils.getbuildCpuApi();
+        logInfo = LogUtils.record(logInfo,String.format("buildCpuApi=%s",buildCpuApi));
+
+        String buildCpuApi2 = HardwareUtils.getbuildCpuApi2();
+        logInfo = LogUtils.record(logInfo,String.format("buildCpuApi2=%s",buildCpuApi2));
+
+        String[] supportedApis = HardwareUtils.getBuildSupportAbis();
+        for(int index = 0; index < supportedApis.length;index ++){
+            logInfo = LogUtils.record(logInfo,String.format("SupportAbi%d=%s",index,supportedApis[index]));
+        }
+
+
+        String buildDevice = HardwareUtils.getBuildDevice();
+        logInfo = LogUtils.record(logInfo,String.format("buildDevice=%s",buildDevice));
+
+        String buildDisplay = HardwareUtils.getBuildDisplay();
+        logInfo = LogUtils.record(logInfo,String.format("buildDisplay=%s",buildDisplay));
+
+        String buildFingerPrint = HardwareUtils.getBuildFingerPrint();
+        logInfo = LogUtils.record(logInfo,String.format("buildFingerPrint=%s",buildFingerPrint));
+
+        String buildRadioVersion = HardwareUtils.getBuildRadioVersion();
+        logInfo = LogUtils.record(logInfo,String.format("buildRadioVersion=%s",buildRadioVersion));
+
+        String buildSerial = HardwareUtils.getBuildSerial();
+        logInfo = LogUtils.record(logInfo,String.format("buildSerial=%s",buildSerial));
+
+        String buildHardware = HardwareUtils.getBuildHardware();
+        logInfo = LogUtils.record(logInfo,String.format("buildHardware=%s",buildHardware));
+
+        String buildHost = HardwareUtils.getBuildHost();
+        logInfo = LogUtils.record(logInfo,String.format("buildHost=%s",buildHost));
+
+        String buildId = HardwareUtils.getBuildId();
+        logInfo = LogUtils.record(logInfo,String.format("buildId=%s",buildId));
+
+        String buildManufacturer = HardwareUtils.getBuildManufacturer();
+        logInfo = LogUtils.record(logInfo,String.format("buildManufacturer=%s",buildManufacturer));
+
+        String buildModel = HardwareUtils.getBuildModel();
+        logInfo = LogUtils.record(logInfo,String.format("buildModel=%s",buildModel));
+
+        String buildProduct = HardwareUtils.getBuildProduct();
+        logInfo = LogUtils.record(logInfo,String.format("buildProduct=%s",buildProduct));
+
+        String buildTags = HardwareUtils.getBuildTags();
+        logInfo = LogUtils.record(logInfo,String.format("buildTags=%s",buildTags));
+
+        String buildTime = HardwareUtils.getBuildTime();
+        logInfo = LogUtils.record(logInfo,String.format("buildTime=%s",buildTime));
+
+        String buildType = HardwareUtils.getBuildType();
+        logInfo = LogUtils.record(logInfo,String.format("buildType=%s",buildType));
+
+        String buildUser = HardwareUtils.getBuildUser();
+        logInfo = LogUtils.record(logInfo,String.format("buildUser=%s",buildUser));
+
+        String buildVersionBaseOS = HardwareUtils.getBuildVersionBaseOS();
+        logInfo = LogUtils.record(logInfo,String.format("buildVersionBaseOS=%s",buildVersionBaseOS));
+
+        String buildVersionCodeName = HardwareUtils.getBuildVersionCodeName();
+        logInfo = LogUtils.record(logInfo,String.format("buildVersionCodeName=%s",buildVersionCodeName));
+
+        String buildVersionIncremental = HardwareUtils.getBuildVersionIncremental();
+        logInfo = LogUtils.record(logInfo,String.format("buildVersionIncremental=%s",buildVersionIncremental));
+
+        String buildVersionRelease = HardwareUtils.getBuildVersionRelease();
+        logInfo = LogUtils.record(logInfo,String.format("buildVersionRelease=%s",buildVersionRelease));
+
+        String buildVersionSecurityPatch = HardwareUtils.getBuildVersionSecurityPatch();
+        logInfo = LogUtils.record(logInfo,String.format("buildVersionSecurityPatch=%s",buildVersionSecurityPatch));
+
+        String buildVersionSDK = HardwareUtils.getBuildVersionSDK();
+        logInfo = LogUtils.record(logInfo,String.format("buildVersionSDK=%s",buildVersionSDK));
+
+        String firmwareVersion = HardwareUtils.getFirmwareVersion();
+        logInfo = LogUtils.record(logInfo,String.format("firmwareVersion=%s",firmwareVersion));
+        return logInfo;
+    }
+
 }

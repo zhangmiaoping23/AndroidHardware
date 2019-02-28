@@ -24,4 +24,12 @@ public class LogUtils {
         //剩余部分
         Log.i(tag, msg);
     }
+
+    public static String record(String recordInfo,String msg){
+        recordInfo += msg;
+        recordInfo += "\r\n";
+        LogUtils.i(msg);
+        return recordInfo;
+    }
+
 }

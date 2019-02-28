@@ -183,42 +183,43 @@ public class SdcardUtils {
 
     public static String sdcardDevicePath = "";
 
-    public static void getInfo(){
+    public static String getInfo(){
+        String logInfo = "";
         //厂商
         String sdcardName = SdcardUtils.getSdcardName();
-        LogUtils.i(String.format("manufactor：sdcardName=%s",sdcardName));
+        logInfo = LogUtils.record(logInfo,String.format("manufactor：sdcardName=%s",sdcardName));
 
         String sdcardCid = SdcardUtils.getSdcardCid();
-        LogUtils.i(String.format("sdcard ID: sdcardCid=%s",sdcardCid));
+        logInfo = LogUtils.record(logInfo,String.format("sdcard ID: sdcardCid=%s",sdcardCid));
 
         String sdcardCsd = SdcardUtils.getSdcardCsd();
-        LogUtils.i(String.format("sdcardCsd=%s",sdcardCsd));
+        logInfo = LogUtils.record(logInfo,String.format("sdcardCsd=%s",sdcardCsd));
 
         //固件编号
         String sdcardFwrev = SdcardUtils.getSdcardFwrev();
-        LogUtils.i(String.format("fireware version： sdcardFwrev=%s",sdcardFwrev));
+        logInfo = LogUtils.record(logInfo,String.format("fireware version： sdcardFwrev=%s",sdcardFwrev));
 
         //硬件版本
         String sdcardHwrev = SdcardUtils.getSdcardHwrev();
-        LogUtils.i(String.format("hardware version： sdcardHwrev=%s",sdcardHwrev));
+        logInfo = LogUtils.record(logInfo,String.format("hardware version： sdcardHwrev=%s",sdcardHwrev));
 
         String sdcardManfid = SdcardUtils.getSdcardManfid();
-        LogUtils.i(String.format("manufacture： sdcardManfid=%s",sdcardManfid));
+        logInfo = LogUtils.record(logInfo,String.format("manufacture： sdcardManfid=%s",sdcardManfid));
 
         //原始设备制造商
         String sdcardOemid = SdcardUtils.getSdcardOemid();
-        LogUtils.i(String.format("original oem： sdcardOemid=%s",sdcardOemid));
+        logInfo = LogUtils.record(logInfo,String.format("original oem： sdcardOemid=%s",sdcardOemid));
 
         String sdcardScr = SdcardUtils.getSdcardScr();
-        LogUtils.i(String.format("sdcardScr=%s",sdcardScr));
+        logInfo = LogUtils.record(logInfo,String.format("sdcardScr=%s",sdcardScr));
 
         //串号/序列号
         String sdcardSerial = SdcardUtils.getSdcardSerial();
-        LogUtils.i(String.format("Serial Number: sdcardSerial=%s",sdcardSerial));
+        logInfo = LogUtils.record(logInfo,String.format("Serial Number: sdcardSerial=%s",sdcardSerial));
 
         //生产日期
         String sdcardDate = SdcardUtils.getSdcardDate();
-        LogUtils.i(String.format("build date: sdcardDate=%s",sdcardDate));
-
+        logInfo = LogUtils.record(logInfo,String.format("build date: sdcardDate=%s",sdcardDate));
+        return logInfo;
     }
 }

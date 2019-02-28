@@ -13,35 +13,37 @@ import java.util.Locale;
 import static org.joor.Reflect.on;
 
 public class OppoHardwareUtils {
-    public static void getHardwares(Context context){
+    public static String getInfo(Context context){
+        String logInfo = "";
         String buildBrand = HardwareUtils.getBuildBrand();
         buildBrand = buildBrand.toLowerCase();
         if(buildBrand.contains("oppo")){
             //oppo机型特有的属性
             String mobileRomVersion = OppoHardwareUtils.getMobileRomVersion();
-            LogUtils.i(String.format("oppo mobileRomVersion=%s",mobileRomVersion));
+            logInfo = LogUtils.record(logInfo,String.format("oppo mobileRomVersion=%s",mobileRomVersion));
 
             String colorOSVersion = OppoHardwareUtils.getColorOSVersion();
-            LogUtils.i(String.format("oppo colorOSVersion=%s",colorOSVersion));
+            logInfo = LogUtils.record(logInfo,String.format("oppo colorOSVersion=%s",colorOSVersion));
 
             boolean isColorOsV2 = OppoHardwareUtils.isColorOsV2();
-            LogUtils.i(String.format("oppo isColorOsV2=%b",isColorOsV2));
+            logInfo = LogUtils.record(logInfo,String.format("oppo isColorOsV2=%b",isColorOsV2));
 
             boolean isColorOsV3 = OppoHardwareUtils.isColorOsV3();
-            LogUtils.i(String.format("oppo isColorOsV3=%b",mobileRomVersion));
+            logInfo = LogUtils.record(logInfo,String.format("oppo isColorOsV3=%b",isColorOsV3));
 
             String romName = OppoHardwareUtils.getRomName();
-            LogUtils.i(String.format("oppo romName(ro.build.display.id)=%s",romName));
+            logInfo = LogUtils.record(logInfo,String.format("oppo romName(ro.build.display.id)=%s",romName));
 
             String colorImei = OppoHardwareUtils.reflectColorImei(context);
-            LogUtils.i(String.format("oppo colorImei(higher than imei)=%s",colorImei));
+            logInfo = LogUtils.record(logInfo,String.format("oppo colorImei(higher than imei)=%s",colorImei));
 
             String insVer = getInsVer(context);
-            LogUtils.i(String.format("oppo insVer=%s",colorImei));
+            logInfo = LogUtils.record(logInfo,String.format("oppo insVer=%s",insVer));
 
             String locale = getLocale();
-            LogUtils.i(String.format("oppo locale=%s",locale));
+            logInfo = LogUtils.record(logInfo,String.format("oppo locale=%s",locale));
         }
+        return logInfo;
     }
     //
     //此优先级高于HardwareUtils.getImei(Context context)

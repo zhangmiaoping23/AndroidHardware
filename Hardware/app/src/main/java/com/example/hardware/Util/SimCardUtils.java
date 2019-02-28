@@ -162,32 +162,33 @@ public class SimCardUtils {
         return simStateDescription;
     }
 
-    public static void getInfo(Context context){
+    public static String getInfo(Context context){
+        String logInfo = "";
         String networkOperatorName = SimCardUtils.getNetworkOperatorName(context);
-        LogUtils.i(String.format("SimCardUtils networkOperatorName=%s",networkOperatorName));
+        logInfo = LogUtils.record(logInfo,String.format("SimCardUtils networkOperatorName=%s",networkOperatorName));
 
         String carrierName = SimCardUtils.getCarrierName(context);
-        LogUtils.i(String.format("SimCardUtils carrierName=%s",carrierName));
+        logInfo = LogUtils.record(logInfo,String.format("SimCardUtils carrierName=%s",carrierName));
 
         String simSerialNumber = SimCardUtils.getSimSerialNumber(context);
-        LogUtils.i(String.format("SimCardUtils simSerialNumber=%s",simSerialNumber));
+        logInfo = LogUtils.record(logInfo,String.format("SimCardUtils simSerialNumber=%s",simSerialNumber));
 
         int simState = SimCardUtils.getSimState(context);
         String simStateDescription = SimCardUtils.getSimStateDescription(simState);
-        LogUtils.i(String.format("SimCardUtils simState= %d simStateDescription=%s",simState,simStateDescription));
+        logInfo = LogUtils.record(logInfo,String.format("SimCardUtils simState= %d simStateDescription=%s",simState,simStateDescription));
 
         String networkOperator = SimCardUtils.getNetworkOperator(context);
         String mcc = SimCardUtils.getMCC(networkOperator);
         String mnc = SimCardUtils.getMNC(networkOperator);
-        LogUtils.i(String.format("SimCardUtils networkOperator=%s mcc=%s mnc=%s",networkOperator,mcc,mnc));
+        logInfo = LogUtils.record(logInfo,String.format("SimCardUtils networkOperator=%s mcc=%s mnc=%s",networkOperator,mcc,mnc));
 
         String subscriberId = SimCardUtils.getSubscriberId(context);
         if(subscriberId == null){
-            LogUtils.i("SimCardUtils subscriberId=null ");
+            logInfo = LogUtils.record(logInfo,"SimCardUtils subscriberId=null ");
         }else{
-            LogUtils.i(String.format("SimCardUtils subscriberId=%s mcc=%s mnc=%s",subscriberId,subscriberId.substring(0,3),subscriberId.substring(3,5)));
+            logInfo = LogUtils.record(logInfo,String.format("SimCardUtils subscriberId=%s mcc=%s mnc=%s",subscriberId,subscriberId.substring(0,3),subscriberId.substring(3,5)));
         }
-
+        return logInfo;
     }
 
 }

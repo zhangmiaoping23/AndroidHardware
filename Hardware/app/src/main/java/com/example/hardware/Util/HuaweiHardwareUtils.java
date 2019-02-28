@@ -15,31 +15,33 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class HuaweiHardwareUtils {
-    public static void getHardwares(Context context){
+    public static String getInfo(Context context){
+        String logInfo = "";
         String manufacturer = HardwareUtils.getBuildManufacturer();
         manufacturer = manufacturer.toLowerCase();
         if(manufacturer.contains("huawei")){
             String huaweiBuildExUDID = getHuaweiBuildExUDID();
-            LogUtils.i(String.format("huawei huaweiBuildExUDID=%s",huaweiBuildExUDID));
+            logInfo = LogUtils.record(logInfo,String.format("huawei huaweiBuildExUDID=%s",huaweiBuildExUDID));
 
             int emuiSdkIntFromBuildEx = getEmuiSdkIntFromBuildEx();
-            LogUtils.i(String.format("huawei emuiSdkIntFromBuildEx=%s",String.valueOf(emuiSdkIntFromBuildEx)));
+            logInfo = LogUtils.record(logInfo,String.format("huawei emuiSdkIntFromBuildEx=%s",String.valueOf(emuiSdkIntFromBuildEx)));
 
             int emuiSdkIntFromSystemProperties = getEmuiSdkIntFromSystemProperties();
-            LogUtils.i(String.format("huawei emuiSdkIntFromSystemProperties=%s",String.valueOf(emuiSdkIntFromSystemProperties)));
+            logInfo = LogUtils.record(logInfo,String.format("huawei emuiSdkIntFromSystemProperties=%s",String.valueOf(emuiSdkIntFromSystemProperties)));
 
             String emuiVersionFromBuildEx = getEmuiVersionFromBuildEx();
-            LogUtils.i(String.format("huawei emuiVersionFromBuildEx=%s",emuiVersionFromBuildEx));
+            logInfo = LogUtils.record(logInfo,String.format("huawei emuiVersionFromBuildEx=%s",emuiVersionFromBuildEx));
 
             String emuiVersionFromSystemProperties = getEmuiVersionFromSystemProperties();
-            LogUtils.i(String.format("huawei emuiVersionFromSystemProperties=%s",emuiVersionFromSystemProperties));
+            logInfo = LogUtils.record(logInfo,String.format("huawei emuiVersionFromSystemProperties=%s",emuiVersionFromSystemProperties));
 
             int emuiApiLevel = getEmuiApiLevel();
-            LogUtils.i(String.format("huawei emuiApiLevel=%d",emuiApiLevel));
+            logInfo = LogUtils.record(logInfo,String.format("huawei emuiApiLevel=%d",emuiApiLevel));
 
             String custVersion = getCustCVersion();
-            LogUtils.i(String.format("huawei custVersion=%s",custVersion));
+            logInfo = LogUtils.record(logInfo,String.format("huawei custVersion=%s",custVersion));
         }
+        return logInfo;
     }
 
     private static final HashMap<Integer,String> hashmapApiLevelToName = new HashMap<Integer,String>();
