@@ -1,7 +1,10 @@
 package com.example.hardware.Util;
 
 import android.content.Context;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -162,14 +165,25 @@ public class SimCardUtils {
         return simStateDescription;
     }
 
+    public static Configuration getResoucesConfiguration(Context context){
+        Configuration configuration = null;
+        Resources resources = context.getResources();
+        if(null != resources){
+            configuration = resources.getConfiguration();
+        }
+        return configuration;
+    }
+
     public static String getInfo(Context context){
         String logInfo = "";
+        //无sim卡也有值
         String networkOperatorName = SimCardUtils.getNetworkOperatorName(context);
         logInfo = LogUtils.record(logInfo,String.format("SimCardUtils networkOperatorName=%s",networkOperatorName));
 
         String carrierName = SimCardUtils.getCarrierName(context);
         logInfo = LogUtils.record(logInfo,String.format("SimCardUtils carrierName=%s",carrierName));
 
+        //无sim卡，simSerialNumber=null
         String simSerialNumber = SimCardUtils.getSimSerialNumber(context);
         logInfo = LogUtils.record(logInfo,String.format("SimCardUtils simSerialNumber=%s",simSerialNumber));
 
@@ -177,16 +191,31 @@ public class SimCardUtils {
         String simStateDescription = SimCardUtils.getSimStateDescription(simState);
         logInfo = LogUtils.record(logInfo,String.format("SimCardUtils simState= %d simStateDescription=%s",simState,simStateDescription));
 
+        logInfo = getMccAndMnc(logInfo,context);
+        return logInfo;
+    }
+
+    public static String getMccAndMnc(String logInfo,Context context){
+        //无sim卡也有值
         String networkOperator = SimCardUtils.getNetworkOperator(context);
         String mcc = SimCardUtils.getMCC(networkOperator);
         String mnc = SimCardUtils.getMNC(networkOperator);
         logInfo = LogUtils.record(logInfo,String.format("SimCardUtils networkOperator=%s mcc=%s mnc=%s",networkOperator,mcc,mnc));
 
+        //无sim卡，subscriberId = null
         String subscriberId = SimCardUtils.getSubscriberId(context);
         if(subscriberId == null){
             logInfo = LogUtils.record(logInfo,"SimCardUtils subscriberId=null ");
         }else{
             logInfo = LogUtils.record(logInfo,String.format("SimCardUtils subscriberId=%s mcc=%s mnc=%s",subscriberId,subscriberId.substring(0,3),subscriberId.substring(3,5)));
+        }
+
+        //无sim卡,ResoucesConfiguration.mcc=0 ResoucesConfiguration.mnc=0
+        Configuration configuration = SimCardUtils.getResoucesConfiguration(context);
+        if(null == configuration){
+            logInfo = LogUtils.record(logInfo,"SimCardUtils ResoucesConfiguration=null");
+        }else{
+            logInfo = LogUtils.record(logInfo,String.format("SimCardUtils ResoucesConfiguration.mcc=%d ResoucesConfiguration.mnc=%d",configuration.mcc,configuration.mnc));
         }
         return logInfo;
     }

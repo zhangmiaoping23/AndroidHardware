@@ -1,6 +1,12 @@
 package com.example.hardware.Util;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
+import java.net.InetSocketAddress;
+import java.net.Proxy.Type;
+import java.net.Proxy;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 
@@ -99,4 +105,24 @@ public class WifiUtils {
         return logInfo;
     }
 
+    public static Proxy getProxy(Context context){
+        Proxy proxy = Proxy.NO_PROXY;
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if(null != connectivityManager){
+            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+            if(null != networkInfo){
+                int type = networkInfo.getType();
+               // if(ConnectivityManager.TYPE_MOBILE == type)
+                {
+                    //获取系统代理的IP与端口
+                    String defaultHost = android.net.Proxy.getDefaultHost();
+                    int defaultPort = android.net.Proxy.getDefaultPort();
+                    if(defaultHost != null && defaultPort != -1) {
+                        proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(defaultHost, defaultPort));
+                    }
+                }
+            }
+        }
+        return proxy;
+    }
 }

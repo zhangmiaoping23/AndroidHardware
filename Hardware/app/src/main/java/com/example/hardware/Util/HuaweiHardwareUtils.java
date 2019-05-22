@@ -146,18 +146,18 @@ public class HuaweiHardwareUtils {
         String udid = null;
         try {
             Class reflectClass = Class.forName("com.huawei.android.os.BuildEx");
-            Method reflectMethod = reflectClass.getMethod("getHuaweiBuildExUDID");
+            Method reflectMethod = reflectClass.getMethod("getUDID");
             Object object = reflectMethod.invoke(null, new Object[0]);
             udid = (String)object;
         } catch(InvocationTargetException exception) {
-            udid = "";
+            udid = "" + "_InvocationTargetException";
         } catch(NoSuchMethodException exception) {
-            udid = null;
+            udid = "null" + "_NoSuchMethodException";
         }
         catch(ClassNotFoundException exception) {
-            udid = null;
+            udid = "null" +"_ClassNotFoundException";
         }catch(Exception exception) {
-            udid = "";
+            udid = "" + "_Exception";
         }
         return udid;
     }
