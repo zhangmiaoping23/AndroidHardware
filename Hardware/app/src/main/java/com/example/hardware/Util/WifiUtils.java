@@ -9,6 +9,7 @@ import java.net.Proxy.Type;
 import java.net.Proxy;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.text.TextUtils;
 
 /**
  * Created by zhangmp on 2018/8/3.
@@ -47,11 +48,16 @@ public class WifiUtils {
         try {
             WifiManager wifiManager = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
             WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-            if(wifiInfo != null) {
+            if(wifiInfo != null && !TextUtils.isEmpty(wifiInfo.getMacAddress()) && !wifiInfo.getMacAddress().equals("02:00:00:00:00:00")) {
+                //在Android 6.0系统上，获取的就有问题，返回的是“02:00:00:00:00:00”
+                //问题分析 :
+                //原来谷歌官方为了给用户更多的数据保护，从这个6.0版本开始， Android 移除了通过 WiFi 和蓝牙 API 来在应用程序中可编程的访问本地硬件标示符。
+                //现在 WifiInfo.getMacAddress() 和 BluetoothAdapter.getAddress() 方法都将返回 02:00:00:00:00:00
+                //HardwareUtils.getMacAddressFromReflectNetworkInterface()采用这问题就是返回正确的
                 macAddress = wifiInfo.getMacAddress();
             }
         }
-        catch(Exception v1) {
+        catch(Exception exception) {
 
         }
 

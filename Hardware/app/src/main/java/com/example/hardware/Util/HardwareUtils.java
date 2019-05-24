@@ -5,6 +5,9 @@ import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 
+import com.android.internal.util.HexDump;
+
+import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.Enumeration;
@@ -94,6 +97,45 @@ public class HardwareUtils {
 
         return macAddress;
     }
+
+    public static String getMacAddressFromReflectNetworkInterface() {
+        String ret = "";
+        Object hardwareAddress;
+        NetworkInterface networkInterface;
+        byte[] bytesHardwareAddress;
+        try {
+            Enumeration<NetworkInterface> enumrationNetworkInterface = NetworkInterface.getNetworkInterfaces();
+            if(enumrationNetworkInterface != null) {
+                while(enumrationNetworkInterface.hasMoreElements()){
+                    networkInterface = enumrationNetworkInterface.nextElement();
+                    if(!(networkInterface.getName().equalsIgnoreCase("wlan0"))) {
+                        continue;
+                    }
+                    Method getHardwareAddressMethod = Class.forName("java.net.NetworkInterface").getMethod("getHardwareAddress");
+                    hardwareAddress = getHardwareAddressMethod.invoke(networkInterface);
+                    if((hardwareAddress instanceof byte[])) {
+                        bytesHardwareAddress = (byte[])hardwareAddress;
+                        StringBuffer stringBuffer = new StringBuffer();
+                        int index;
+                        for(index = 0; index < bytesHardwareAddress.length - 1; ++index) {
+                            stringBuffer.append(HexDump.toHexString(bytesHardwareAddress[index]).toUpperCase());
+                            stringBuffer.append("-");
+                        }
+
+                        stringBuffer.append(HexDump.toHexString(bytesHardwareAddress[bytesHardwareAddress.length - 1]).toUpperCase());
+                        ret = stringBuffer.toString();
+                        break;
+                    }
+                }
+            }
+        }
+        catch(Exception exception) {
+            exception.printStackTrace();
+        }
+
+        return ret;
+    }
+
 
     public static String getBuildBoard(){
         String buildBoard = Build.BOARD;
@@ -373,8 +415,11 @@ public class HardwareUtils {
         String hostAddress = HardwareUtils.getHostAddress();
         logInfo = LogUtils.record(logInfo,String.format("ip=%s",hostAddress));
 
-        String macAddress = HardwareUtils.getMacAddress(hostAddress);
-        logInfo = LogUtils.record(logInfo,String.format("macAddress=%s",macAddress));
+        String macAddressFromNetworkInterface = HardwareUtils.getMacAddress(hostAddress);
+        logInfo = LogUtils.record(logInfo,String.format("macAddressFromNetworkInterface=%s",macAddressFromNetworkInterface));
+
+        String macAddressFromReflectNetworkInterface = HardwareUtils.getMacAddressFromReflectNetworkInterface();
+        logInfo = LogUtils.record(logInfo,String.format("macAddressFromReflectNetworkInterface=%s",macAddressFromReflectNetworkInterface));
         return logInfo;
     }
 
