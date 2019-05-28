@@ -324,7 +324,7 @@ public class HardwareUtils {
     }
 
     public static String getImsi(Context context){
-        return SimCardUtils.getSubscriberId(context);//460015050112949
+        return SimCardUtils.getImsi(context);//460015050112949
     }
 
     public static String getSimSerialNumber(Context context) {

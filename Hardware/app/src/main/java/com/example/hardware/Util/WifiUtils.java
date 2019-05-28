@@ -100,12 +100,15 @@ public class WifiUtils {
         String connectWifiIP = WifiUtils.getConnectWifiIP(context);
         logInfo = LogUtils.record(logInfo,String.format("connectWifiIP=%s", connectWifiIP));
 
+        //getMacAddress()是本机无线网卡的MAC地址
         String connectWifiMacAddress = WifiUtils.getConnectWifiMacAddress(context);
         logInfo = LogUtils.record(logInfo,String.format("connectWifiMacAddress=%s", connectWifiMacAddress));
 
+        //getBSSID()是路由器WIFI的MAC地址
         String connectWifiBSSID = WifiUtils.getConnectWifiBSSID(context);
         logInfo = LogUtils.record(logInfo,String.format("connectWifiBSSID=%s", connectWifiBSSID));
 
+        //Service Set Identifier
         String connectWifiSSID = WifiUtils.getConnectWifiSSID(context);
         logInfo = LogUtils.record(logInfo,String.format("connectWifiSSID=%s", connectWifiSSID));
         return logInfo;
