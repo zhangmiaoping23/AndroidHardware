@@ -10,8 +10,7 @@ import com.example.hardware.Util.CPUUtils;
 import com.example.hardware.Util.DisplayUtils;
 import com.example.hardware.Util.HardwareUtils;
 import com.example.hardware.Util.HuaweiHardwareUtils;
-import com.example.hardware.Util.LogUtils;
-import com.example.hardware.Util.MemUtils;
+import com.example.hardware.Util.StoreUtils;
 import com.example.hardware.Util.OppoHardwareUtils;
 import com.example.hardware.Util.RuntimeUtils;
 import com.example.hardware.Util.SdcardUtils;
@@ -51,7 +50,7 @@ public class MainActivity extends Activity{
         showInfo += CPUUtils.getInfo();
 
         showInfo += "\r\n";
-        showInfo += MemUtils.getInfo();
+        showInfo += StoreUtils.getInfo();
 
         showInfo += "\r\n";
         showInfo += RuntimeUtils.getInfo();

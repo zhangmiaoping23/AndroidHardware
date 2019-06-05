@@ -4,7 +4,11 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
+import android.telephony.SubscriptionInfo;
+import android.telephony.SubscriptionManager;
 import android.telephony.TelephonyManager;
+
+import java.lang.reflect.Method;
 
 /**
  * Created by zhangmp on 2018/5/31.
@@ -122,8 +126,40 @@ public class SimCardUtils {
         return ret;
     }
 
+    public static String getICCIDBySubscriptionManager(Context context){
+        String iccid = "";
+        //sdk level不小于22使用
+        if(Build.VERSION.SDK_INT >= 22){
+            //int index = DEFAULT_SLOT_INDEX;
+            int index = 0;
+            SubscriptionInfo info = SubscriptionManager.from(context).getActiveSubscriptionInfoForSimSlotIndex(index);
+            if (info != null) {
+                iccid = info.getIccId();
+            }
+        }
+        return iccid;
+    }
+
     public static String getICCID(Context context){
         return getSimSerialNumber(context);
+    }
+
+    public static String getReflectICCID(Context context){
+        String reflectICCID = "";
+        TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        try {
+            Method getSubscriberInfoMethod = telephonyManager.getClass().getDeclaredMethod("getSubscriberInfo");
+            getSubscriberInfoMethod.setAccessible(true);
+            Object objectTelephonyManager = getSubscriberInfoMethod.invoke(telephonyManager);
+            Method getPhoneMethod = objectTelephonyManager.getClass().getDeclaredMethod("getPhone",int.class);
+            getPhoneMethod.setAccessible(true);
+            Object objectPhone = getPhoneMethod.invoke(objectTelephonyManager,0);
+            Method getFullIccSerialNumberMethod = objectPhone.getClass().getMethod("getFullIccSerialNumber");
+            reflectICCID = (String) getFullIccSerialNumberMethod.invoke(objectPhone);
+
+        } catch (Throwable e) {
+        }
+        return reflectICCID;
     }
 
     /*
@@ -321,6 +357,13 @@ public class SimCardUtils {
      * 无sim卡，subscriberId=null
      */
     public static String getSubscriberId(Context context){
+        /*
+        simOperator = MCC + MNC
+        IMSI = MCC + MNC + MSIN
+        国际移动用户识别码（IMSI：International Mobile Subscriber Identification Number）是区别移动用户的标志，储存在SIM卡中，可用于区别移动用户的有效信息。
+        其总长度不超过15位，同样使用0~9的数字。其中MCC是移动用户所属国家代号，占3位数字，中国的MCC规定为460；MNC是移动网号码，由两位或者三位数字组成，中国移动
+        的移动网络编码（MNC）为00.用于识别移动用户所归属的移动通信网；MSIN是移动用户识别码，用以识别某一移动通信网中的移动用户。
+         */
         String subscriberId = "";
         TelephonyManager telephonyManager = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
         if(null != telephonyManager){
@@ -481,8 +524,13 @@ public class SimCardUtils {
         String simOperatorName = SimCardUtils.getSimOperatorName(context);
         logInfo = LogUtils.record(logInfo,String.format("SimCardUtils simOperatorName=%s",simOperatorName));
 
-        String simSerialNumber = SimCardUtils.getSimSerialNumber(context);
-        logInfo = LogUtils.record(logInfo,String.format("SimCardUtils simSerialNumber_ICCID=%s",simSerialNumber));
+        String simSerialNumber_ICCID = SimCardUtils.getICCID(context);
+        logInfo = LogUtils.record(logInfo,String.format("SimCardUtils simSerialNumber_ICCID=%s",simSerialNumber_ICCID));
+
+        String reflectICCID = SimCardUtils.getReflectICCID(context);
+        logInfo = LogUtils.record(logInfo,String.format("SimCardUtils reflectICCID=%s",reflectICCID));
+        String iccidBySubscriptionManager = SimCardUtils.getICCIDBySubscriptionManager(context);
+        logInfo = LogUtils.record(logInfo,String.format("SimCardUtils iccidBySubscriptionManager=%s",iccidBySubscriptionManager));
 
         int simState = SimCardUtils.getSimState(context);
         String simStateDescription = SimCardUtils.getSimStateDescription(simState);
@@ -514,7 +562,7 @@ public class SimCardUtils {
          */
 
         /*
-        OPPO R9m8.0无SIM卡,WIFI网络
+        OPPO R9m8.0 有电信SIM卡,WIFI网络
         SimCardUtils networkType=13 networkTypeDescription=NETWORK_TYPE_LTE
         SimCardUtils dataNetworkType=0 dataNetworkTypeDescription=NETWORK_TYPE_UNKNOWN
         SimCardUtils voiceNetworkType=0 voiceNetworkTypeDescription=NETWORK_TYPE_UNKNOWN
@@ -531,6 +579,72 @@ public class SimCardUtils {
         SimCardUtils subscriberId_imsi=460036960147295 mcc=460 mnc=03
         SimCardUtils ResoucesConfiguration.mcc=460 ResoucesConfiguration.mnc=3
         SimCardUtils line1Number=
+
+         */
+
+        /*
+        Oppo R9m 有电信SIM卡,WIFI网络
+        SimCardUtils networkType=14 networkTypeDescription=NETWORK_TYPE_EHRPD
+        SimCardUtils dataNetworkType=0 dataNetworkTypeDescription=NETWORK_TYPE_UNKNOWN
+        SimCardUtils voiceNetworkType=0 voiceNetworkTypeDescription=NETWORK_TYPE_UNKNOWN
+        SimCardUtils networkCountryIso=cn
+        SimCardUtils networkOperatorName=中国电信
+        SimCardUtils carrierName=China Net
+        SimCardUtils phoneType=2 phoneTypeDescription=PHONE_TYPE_CDMA
+        SimCardUtils simCountryIso=cn
+        SimCardUtils simOperatorName=中国电信
+        SimCardUtils simSerialNumber_ICCID=89860318245922746218
+        SimCardUtils simState= 5 simStateDescription=SIM_STATE_READY
+        SimCardUtils networkOperator=46003 mcc=460 mnc=03
+        SimCardUtils simOperator=46003 mcc=460 mnc=03
+        SimCardUtils subscriberId_imsi=460036960204851 mcc=460 mnc=03
+        SimCardUtils ResoucesConfiguration.mcc=460 ResoucesConfiguration.mnc=3
+        SimCardUtils line1Number=
+
+         */
+         /*
+         XiaoMi9的Android9,双卡：主卡 移动   副卡 联通
+        SimCardUtils networkType=13 networkTypeDescription=NETWORK_TYPE_LTE
+        SimCardUtils dataNetworkType=13 dataNetworkTypeDescription=NETWORK_TYPE_LTE
+        SimCardUtils voiceNetworkType=13 voiceNetworkTypeDescription=NETWORK_TYPE_LTE
+        SimCardUtils networkCountryIso=cn
+        SimCardUtils networkOperatorName=中国移动
+        SimCardUtils carrierName=China Mobile
+        SimCardUtils phoneType=1 phoneTypeDescription=PHONE_TYPE_GSM
+        SimCardUtils simCountryIso=cn
+        SimCardUtils simOperatorName=中国移动
+        SimCardUtils simSerialNumber_ICCID=898600E51314F2071232
+        SimCardUtils simState= 5 simStateDescription=SIM_STATE_READY
+        SimCardUtils networkOperator=46000 mcc=460 mnc=00
+        SimCardUtils simOperator=46001 mcc=460 mnc=01
+        SimCardUtils subscriberId_imsi=460027592317732 mcc=460 mnc=02
+        SimCardUtils ResoucesConfiguration.mcc=460 ResoucesConfiguration.mnc=2
+        SimCardUtils line1Number=
+
+          */
+
+        /*
+        LGE Nexus 5 Android4.4.4 无SIM卡
+        SimCardUtils networkType=0 networkTypeDescription=NETWORK_TYPE_UNKNOWN
+        SimCardUtils dataNetworkType=0 dataNetworkTypeDescription=NETWORK_TYPE_UNKNOWN
+        SimCardUtils voiceNetworkType=0 voiceNetworkTypeDescription=NETWORK_TYPE_UNKNOWN
+        SimCardUtils networkCountryIso=
+        SimCardUtils networkOperatorName=
+        SimCardUtils carrierName=none
+        SimCardUtils phoneType=1 phoneTypeDescription=PHONE_TYPE_GSM
+        SimCardUtils simCountryIso=
+        SimCardUtils simOperatorName=
+        SimCardUtils simSerialNumber_ICCID=null
+        SimCardUtils simState= 1 simStateDescription=SIM_STATE_ABSENT
+        SimCardUtils networkOperator= mcc= mnc=
+        SimCardUtils simOperator= mcc= mnc=
+        SimCardUtils subscriberId_imsi=null
+        SimCardUtils ResoucesConfiguration.mcc=0 ResoucesConfiguration.mnc=0
+        SimCardUtils line1Number=null
+
+         */
+
+        /*
 
          */
         return logInfo;

@@ -8,7 +8,7 @@ import java.io.IOException;
  * Created by zhangmp on 2019/1/23.
  */
 
-public class MemUtils {
+public class StoreUtils {
 
     /*
     root@R9:/ # cat /proc/meminfo
@@ -48,7 +48,7 @@ public class MemUtils {
     VmallocChunk:   250703456 kB
 
      */
-    public static long getRamTotalSize(){
+    public static long getRamTotalSizeInKB(){
         FileReader fileReader = null;
         BufferedReader bufferReader = null;
         long RamTotalSize = 0;
@@ -58,27 +58,29 @@ public class MemUtils {
             String line = bufferReader.readLine();
             if(line != null) {
                 String totalSize = line.substring(line.indexOf(':') + 1, line.indexOf('k')).trim();
-                RamTotalSize = ((long)(Integer.parseInt(totalSize) / 1024));
+                RamTotalSize = Long.parseLong(totalSize);
             }
         }catch (Throwable throwable){
 
         }
-
-        if(fileReader != null) {
-            try {
-                fileReader.close();
+        finally {
+            if(fileReader != null) {
+                try {
+                    fileReader.close();
+                }
+                catch(IOException ioException) {
+                }
             }
-            catch(IOException ioException) {
+
+            if(bufferReader != null) {
+                try {
+                    bufferReader.close();
+                }
+                catch(IOException ioException) {
+                }
             }
         }
 
-        if(bufferReader != null) {
-            try {
-                bufferReader.close();
-            }
-            catch(IOException ioException) {
-            }
-        }
         return RamTotalSize;
     }
 
@@ -86,8 +88,8 @@ public class MemUtils {
         String logInfo = "";
         String tmp = "";
 
-        long RamTotalSize = MemUtils.getRamTotalSize();
-        tmp = String.format("RamTotalSize=%d \"MB\"",RamTotalSize);
+        long ramTotalSizeInKB = StoreUtils.getRamTotalSizeInKB();
+        tmp = String.format("ramTotalSizeInKB=%d \"MB\"",ramTotalSizeInKB);
         logInfo = LogUtils.record(logInfo,tmp);
 
         return logInfo;

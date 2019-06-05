@@ -314,6 +314,13 @@ public class HardwareUtils {
         return getDeviceId(context);
     }
 
+    /**
+     * 唯一的设备ID：<br/>
+     * 如果是GSM网络，返回IMEI；如果是CDMA网络，返回MEID<br/>
+     * 需要权限：android.permission.READ_PHONE_STATE
+     *
+     * @return null if device ID is not available.
+     */
     public static String getDeviceId(Context context) {
         String deviceId = "";
         TelephonyManager telephonyManager = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
