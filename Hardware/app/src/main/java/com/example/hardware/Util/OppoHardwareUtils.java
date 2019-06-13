@@ -22,6 +22,9 @@ public class OppoHardwareUtils {
             String mobileRomVersion = OppoHardwareUtils.getMobileRomVersion();
             logInfo = LogUtils.record(logInfo,String.format("oppo mobileRomVersion=%s",mobileRomVersion));
 
+            String subBrand = OppoHardwareUtils.getSubBrand();
+            logInfo = LogUtils.record(logInfo,String.format("oppo subBrand=%s",subBrand));
+
             String colorOSVersion = OppoHardwareUtils.getColorOSVersion();
             logInfo = LogUtils.record(logInfo,String.format("oppo colorOSVersion=%s",colorOSVersion));
 
@@ -72,6 +75,18 @@ public class OppoHardwareUtils {
             exception.printStackTrace();
         }
         return mobileRomVersion;
+    }
+
+    public static String getSubBrand() {
+        String subBrand = "";
+        try {
+            Class systemPropertiesClass = Class.forName("android.os.SystemProperties");
+            subBrand = (String)systemPropertiesClass.getMethod("get", String.class, String.class).invoke(systemPropertiesClass, "ro.product.brand.sub", "");
+        }
+        catch(Exception exception) {
+            exception.printStackTrace();
+        }
+        return subBrand;
     }
 
     public static String getColorOSVersion(){
