@@ -16,7 +16,9 @@ import com.example.hardware.Util.RuntimeUtils;
 import com.example.hardware.Util.SdcardUtils;
 import com.example.hardware.Util.SignatureUtils;
 import com.example.hardware.Util.SimCardUtils;
+import com.example.hardware.Util.VivoHardwareUtils;
 import com.example.hardware.Util.WifiUtils;
+import com.example.hardware.Util.XiaomiHardwareUtils;
 
 public class MainActivity extends Activity{
 
@@ -35,7 +37,13 @@ public class MainActivity extends Activity{
         showInfo += OppoHardwareUtils.getInfo(this);
 
         showInfo += "\r\n";
+        showInfo += VivoHardwareUtils.getInfo(this);
+
+        showInfo += "\r\n";
         showInfo += HuaweiHardwareUtils.getInfo(this);
+
+        showInfo += "\r\n";
+        showInfo += XiaomiHardwareUtils.getInfo(this);
 
         showInfo += "\r\n";
         showInfo += SimCardUtils.getInfo(this);
