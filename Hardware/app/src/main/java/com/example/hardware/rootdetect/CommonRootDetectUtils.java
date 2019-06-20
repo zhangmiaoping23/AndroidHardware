@@ -41,7 +41,7 @@ public class CommonRootDetectUtils {
     }
 
     private static ArrayList<String> defaultDirs = new ArrayList<String>();
-    private static synchronized void syncInitSuDir(){
+    private static synchronized void syncInitDefaultDirs(){
         if(defaultDirs.isEmpty()){
             defaultDirs.add("/sbin");
             defaultDirs.add("/vendor/bin");
@@ -67,18 +67,19 @@ public class CommonRootDetectUtils {
         }
     }
 
-    private static synchronized boolean checkForBinary(String suFileName) {
-       boolean isRoot = false;
+    private static synchronized boolean checkForBinary(String binaryName) {
+       boolean isFind = false;
         if(defaultDirs.isEmpty()){
-            syncInitSuDir();
+            syncInitDefaultDirs();
         }
         int size = defaultDirs.size();
         for(int index = 0; index < size; ++index) {
-            if(new File(new StringBuilder().append(defaultDirs.get(index)).append(File.separator).append(suFileName).toString()).exists()) {
-                isRoot = true;
+            if(new File(new StringBuilder().append(defaultDirs.get(index)).append(File.separator).append(binaryName).toString()).exists()) {
+                isFind = true;
+                break;
             }
         }
 
-        return isRoot;
+        return isFind;
     }
 }

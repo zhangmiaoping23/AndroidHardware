@@ -13,15 +13,23 @@ public class RootDetectUtils {
         isRoot = CommonRootDetectUtils.checkSecureProperty();
         logInfo = LogUtils.record(logInfo,String.format("RootDetect checkSecurePropertyRet = %s",String.valueOf(isRoot)));
 
-        boolean isEmulator = EmulatorDetectUtils.checkEmulator();
-        logInfo = LogUtils.record(logInfo,String.format("RootDetect checkEmulatorRet = %s",String.valueOf(isEmulator)));
-
         isRoot = CommonRootDetectUtils.checkBuildTags();
         logInfo = LogUtils.record(logInfo,String.format("RootDetect checkBuildTagsRet = %s",String.valueOf(isRoot)));
 
         isRoot = CommonRootDetectUtils.checkMagisk();
         logInfo = LogUtils.record(logInfo,String.format("RootDetect checkMagiskRet = %s",String.valueOf(isRoot)));
 
+        boolean isEmulator = EmulatorDetectUtils.checkEmulator();
+        logInfo = LogUtils.record(logInfo,String.format("RootDetect checkEmulatorRet = %s",String.valueOf(isEmulator)));
+
+        isEmulator = EmulatorDetectUtils.checkEmulatorProductName();
+        logInfo = LogUtils.record(logInfo,String.format("RootDetect checkEmulatorProductNameRet = %s",String.valueOf(isEmulator)));
+
+        isEmulator = EmulatorDetectUtils.checkEmulatorSystemProperties();
+        logInfo = LogUtils.record(logInfo,String.format("RootDetect checkEmulatorSystemPropertiesRet = %s",String.valueOf(isEmulator)));
+
+        isEmulator = EmulatorDetectUtils.checkEmulatorFiles();
+        logInfo = LogUtils.record(logInfo,String.format("RootDetect checkEmulatorFilesRet = %s",String.valueOf(isEmulator)));
         return logInfo;
     }
 }
