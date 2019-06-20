@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.SystemProperties;
 import android.text.TextUtils;
 
+import com.example.hardware.rootdetect.HuaweiEmui10RootDetectUtils;
+
 import org.joor.Reflect;
 
 import java.lang.reflect.Field;
@@ -40,6 +42,9 @@ public class HuaweiHardwareUtils {
 
             String custVersion = getCustCVersion();
             logInfo = LogUtils.record(logInfo,String.format("huawei custVersion=%s",custVersion));
+
+            boolean isRoot = HuaweiEmui10RootDetectUtils.isRoot();
+
         }
         return logInfo;
     }
@@ -133,12 +138,12 @@ public class HuaweiHardwareUtils {
     }
 
     public static String getCustCVersion() {
-        return SystemPropertiesUtils.get("ro.product.CustCVersion", "");
+        return SystemPropertiesUtils.getString("ro.product.CustCVersion", "");
     }
 
     public static String getEmuiVersionFromSystemProperties(){
         String emuiVersion = "";
-        emuiVersion = SystemPropertiesUtils.get("ro.build.version.emui","");
+        emuiVersion = SystemPropertiesUtils.getString("ro.build.version.emui","");
         return emuiVersion;
     }
 

@@ -80,8 +80,7 @@ public class OppoHardwareUtils {
     public static String getSubBrand() {
         String subBrand = "";
         try {
-            Class systemPropertiesClass = Class.forName("android.os.SystemProperties");
-            subBrand = (String)systemPropertiesClass.getMethod("get", String.class, String.class).invoke(systemPropertiesClass, "ro.product.brand.sub", "");
+            subBrand = SystemPropertiesUtils.getString("ro.product.brand.sub", "");
         }
         catch(Exception exception) {
             exception.printStackTrace();

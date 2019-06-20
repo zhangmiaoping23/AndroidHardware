@@ -9,7 +9,7 @@ import org.joor.ReflectException;
 
 public class SystemPropertiesUtils {
 
-    public static String get(String key, String defaultValue) {
+    public static String getString(String key, String defaultValue) {
         String value;
         try {
             value = Reflect.on("android.os.SystemProperties")

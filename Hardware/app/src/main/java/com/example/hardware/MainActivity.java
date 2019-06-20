@@ -19,6 +19,7 @@ import com.example.hardware.Util.SimCardUtils;
 import com.example.hardware.Util.VivoHardwareUtils;
 import com.example.hardware.Util.WifiUtils;
 import com.example.hardware.Util.XiaomiHardwareUtils;
+import com.example.hardware.rootdetect.RootDetectUtils;
 
 public class MainActivity extends Activity{
 
@@ -65,6 +66,9 @@ public class MainActivity extends Activity{
 
         showInfo += "\r\n";
         showInfo += WifiUtils.getInfo(this);
+
+        showInfo += "\r\n";
+        showInfo += RootDetectUtils.getInfo(this);
 
         TextView showTextView =   ((TextView) findViewById(R.id.tv_showinfo));
         showTextView.setText(showInfo);
