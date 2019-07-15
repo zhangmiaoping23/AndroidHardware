@@ -37,6 +37,9 @@ public class HuaweiHardwareUtils {
             String emuiVersionFromSystemProperties = getEmuiVersionFromSystemProperties();
             logInfo = LogUtils.record(logInfo,String.format("huawei emuiVersionFromSystemProperties=%s",emuiVersionFromSystemProperties));
 
+            String versionMagicFromSystemProperties = getVersionMagicFromSystemProperties();
+            logInfo = LogUtils.record(logInfo,String.format("huawei versionMagicFromSystemProperties=%s",versionMagicFromSystemProperties));
+
             int emuiApiLevel = getEmuiApiLevel();
             logInfo = LogUtils.record(logInfo,String.format("huawei emuiApiLevel=%d",emuiApiLevel));
 
@@ -67,7 +70,10 @@ public class HuaweiHardwareUtils {
         hashmapApiLevelToName.put(Integer.valueOf(13), "5.1");
         hashmapApiLevelToName.put(Integer.valueOf(14), "8.0");
         hashmapApiLevelToName.put(Integer.valueOf(15), "8.1");
+        hashmapApiLevelToName.put(Integer.valueOf(16), "8.2");
+        hashmapApiLevelToName.put(Integer.valueOf(17), "9.0");
     }
+
     public static int getEmuiApiLevel(){
         int emuiApiLevel = SystemProperties.getInt("ro.build.hw_emui_api_level", 0);
         if(emuiApiLevel == 0) {
@@ -145,6 +151,12 @@ public class HuaweiHardwareUtils {
         String emuiVersion = "";
         emuiVersion = SystemPropertiesUtils.getString("ro.build.version.emui","");
         return emuiVersion;
+    }
+
+    public static String getVersionMagicFromSystemProperties(){
+        String versionMagic = "";
+        versionMagic = SystemPropertiesUtils.getString("ro.build.version.magic","");
+        return versionMagic;
     }
 
     public static String getHuaweiBuildExUDID(){

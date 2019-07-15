@@ -89,7 +89,7 @@ public class StoreUtils {
         String tmp = "";
 
         long ramTotalSizeInKB = StoreUtils.getRamTotalSizeInKB();
-        tmp = String.format("ramTotalSizeInKB=%d \"MB\"",ramTotalSizeInKB);
+        tmp = String.format("ramTotalSizeInKB=%d \"KB\"",ramTotalSizeInKB);
         logInfo = LogUtils.record(logInfo,tmp);
 
         return logInfo;

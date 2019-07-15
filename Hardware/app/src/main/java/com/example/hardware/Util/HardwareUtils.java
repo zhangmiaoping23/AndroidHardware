@@ -187,9 +187,19 @@ public class HardwareUtils {
         return buildDisplay;
     }
 
+    public static String getSystemPropDisplay(){
+        String systemPropDisplay = SystemPropertiesUtils.getString("ro.build.display.id","");
+        return systemPropDisplay;
+    }
+
     public static String getBuildFingerPrint(){
         String buildFingerPrint = Build.FINGERPRINT;
         return buildFingerPrint;
+    }
+
+    public static String getSystemPropFingerPrint(){
+        String fingerPrint = SystemPropertiesUtils.getString("ro.build.fingerprint","");
+        return fingerPrint;
     }
 
     public static String getBuildRadioVersion(){
@@ -235,13 +245,24 @@ public class HardwareUtils {
         return buildManufacturer;
     }
 
+    public static String getSystemPropManufacturer(){
+         String manufacturer = SystemPropertiesUtils.getString("ro.product.manufacturer","");
+        return manufacturer;
+    }
+
     public static String getBuildModel(){
         String buildModel =Build.MODEL;
         return buildModel;
     }
+
     public static String getBuildProduct(){
         String buildProduct = Build.PRODUCT;
         return buildProduct;
+    }
+
+    public static String getSystemPropProductName(){
+        String systemPropProductName = SystemPropertiesUtils.getString("ro.product.name","");
+        return systemPropProductName;
     }
 
     public static String getBuildTags(){
@@ -482,8 +503,14 @@ public class HardwareUtils {
         String buildDisplay = HardwareUtils.getBuildDisplay();
         logInfo = LogUtils.record(logInfo,String.format("buildDisplay=%s",buildDisplay));
 
+        String systemPropDisplay = HardwareUtils.getSystemPropDisplay();
+        logInfo = LogUtils.record(logInfo,String.format("systemPropDisplay=%s",systemPropDisplay));
+
         String buildFingerPrint = HardwareUtils.getBuildFingerPrint();
         logInfo = LogUtils.record(logInfo,String.format("buildFingerPrint=%s",buildFingerPrint));
+
+        String systemPropFingerPrint = HardwareUtils.getSystemPropFingerPrint();
+        logInfo = LogUtils.record(logInfo,String.format("systemPropFingerPrint=%s",systemPropFingerPrint));
 
         String buildRadioVersion = HardwareUtils.getBuildRadioVersion();
         logInfo = LogUtils.record(logInfo,String.format("buildRadioVersion=%s",buildRadioVersion));
@@ -503,11 +530,17 @@ public class HardwareUtils {
         String buildManufacturer = HardwareUtils.getBuildManufacturer();
         logInfo = LogUtils.record(logInfo,String.format("buildManufacturer=%s",buildManufacturer));
 
+        String systemPropManufacturer = HardwareUtils.getSystemPropManufacturer();
+        logInfo = LogUtils.record(logInfo,String.format("systemPropManufacturer=%s",systemPropManufacturer));
+
         String buildModel = HardwareUtils.getBuildModel();
         logInfo = LogUtils.record(logInfo,String.format("buildModel=%s",buildModel));
 
         String buildProduct = HardwareUtils.getBuildProduct();
         logInfo = LogUtils.record(logInfo,String.format("buildProduct=%s",buildProduct));
+
+        String systemPropProductName = HardwareUtils.getSystemPropProductName();
+        logInfo = LogUtils.record(logInfo,String.format("systemPropProductName=%s",systemPropProductName));
 
         String buildTags = HardwareUtils.getBuildTags();
         logInfo = LogUtils.record(logInfo,String.format("buildTags=%s",buildTags));
