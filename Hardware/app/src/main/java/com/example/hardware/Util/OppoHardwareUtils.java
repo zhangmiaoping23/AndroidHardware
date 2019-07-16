@@ -18,6 +18,8 @@ public class OppoHardwareUtils {
         String buildBrand = HardwareUtils.getBuildBrand();
         buildBrand = buildBrand.toLowerCase();
         if(buildBrand.contains("oppo")){
+            logInfo = LogUtils.record(logInfo,"");
+
             //oppo机型特有的属性
             String mobileRomVersion = OppoHardwareUtils.getMobileRomVersion();
             logInfo = LogUtils.record(logInfo,String.format("oppo mobileRomVersion=%s",mobileRomVersion));

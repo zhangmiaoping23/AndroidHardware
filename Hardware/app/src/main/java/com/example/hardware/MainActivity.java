@@ -10,6 +10,10 @@ import com.example.hardware.Util.CPUUtils;
 import com.example.hardware.Util.DisplayUtils;
 import com.example.hardware.Util.HardwareUtils;
 import com.example.hardware.Util.HuaweiHardwareUtils;
+import com.example.hardware.Util.LgHardwareUtils;
+import com.example.hardware.Util.NubiaHardwareUtils;
+import com.example.hardware.Util.Qiku360HardwareUtils;
+import com.example.hardware.Util.SmartisanHardwareUtils;
 import com.example.hardware.Util.StoreUtils;
 import com.example.hardware.Util.OppoHardwareUtils;
 import com.example.hardware.Util.RuntimeUtils;
@@ -34,18 +38,21 @@ public class MainActivity extends Activity{
         String showInfo = "";
         showInfo += HardwareUtils.getInfo(this);
 
-        showInfo += "\r\n";
         showInfo += OppoHardwareUtils.getInfo(this);
 
-        showInfo += "\r\n";
         showInfo += VivoHardwareUtils.getInfo(this);
 
-        showInfo += "\r\n";
         showInfo += HuaweiHardwareUtils.getInfo(this);
 
-        showInfo += "\r\n";
         showInfo += XiaomiHardwareUtils.getInfo(this);
 
+        showInfo += Qiku360HardwareUtils.getInfo(this);
+
+        showInfo += SmartisanHardwareUtils.getInfo(this);
+
+        showInfo += NubiaHardwareUtils.getInfo(this);
+
+        showInfo += LgHardwareUtils.getInfo(this);
         showInfo += "\r\n";
         showInfo += SimCardUtils.getInfo(this);
 

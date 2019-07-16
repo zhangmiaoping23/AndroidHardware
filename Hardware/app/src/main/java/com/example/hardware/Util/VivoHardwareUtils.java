@@ -12,6 +12,7 @@ public class VivoHardwareUtils {
         String manufacturer = HardwareUtils.getBuildManufacturer();
         manufacturer = manufacturer.toLowerCase();
         if(manufacturer.contains("vivo")){
+            logInfo = LogUtils.record(logInfo,"");
 
             String systemPropVivoHardwareVersion = getSystemPropVivoHardwareVersion();
             logInfo = LogUtils.record(logInfo,String.format("vivo systemPropVivoHardwareVersion=%s",systemPropVivoHardwareVersion));

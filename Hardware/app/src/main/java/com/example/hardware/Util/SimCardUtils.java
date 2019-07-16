@@ -665,7 +665,12 @@ public class SimCardUtils {
         if(subscriberId == null){
             logInfo = LogUtils.record(logInfo,"SimCardUtils subscriberId_imsi=null ");
         }else{
-            logInfo = LogUtils.record(logInfo,String.format("SimCardUtils subscriberId_imsi=%s mcc=%s mnc=%s",subscriberId,subscriberId.substring(0,3),subscriberId.substring(3,5)));
+            if(subscriberId.length() >= 6){
+                logInfo = LogUtils.record(logInfo,String.format("SimCardUtils subscriberId_imsi=%s mcc=%s mnc=%s",subscriberId,subscriberId.substring(0,3),subscriberId.substring(3,5)));
+            }else{
+                logInfo = LogUtils.record(logInfo,String.format("SimCardUtils subscriberId_imsi=%s",subscriberId));
+            }
+
         }
 
         Configuration configuration = SimCardUtils.getResoucesConfiguration(context);

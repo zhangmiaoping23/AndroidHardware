@@ -12,6 +12,8 @@ public class XiaomiHardwareUtils {
         String manufacturer = HardwareUtils.getBuildManufacturer();
         manufacturer = manufacturer.toLowerCase();
         if(manufacturer.contains("xiaomi")){
+            logInfo = LogUtils.record(logInfo,"");
+
             String systemPropUIVersionCode = getSystemPropUIVersionCode();
             logInfo = LogUtils.record(logInfo,String.format("xiaomi systemPropUIVersionCode=%s",systemPropUIVersionCode));
 

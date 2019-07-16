@@ -22,6 +22,8 @@ public class HuaweiHardwareUtils {
         String manufacturer = HardwareUtils.getBuildManufacturer();
         manufacturer = manufacturer.toLowerCase();
         if(manufacturer.contains("huawei")){
+            logInfo = LogUtils.record(logInfo,"");
+
             String huaweiBuildExUDID = getHuaweiBuildExUDID();
             logInfo = LogUtils.record(logInfo,String.format("huawei huaweiBuildExUDID=%s",huaweiBuildExUDID));
 
