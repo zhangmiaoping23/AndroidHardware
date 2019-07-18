@@ -3,10 +3,7 @@ package com.example.hardware.Util;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-
-import java.net.InetSocketAddress;
-import java.net.Proxy.Type;
-import java.net.Proxy;
+import android.net.Proxy;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.text.TextUtils;
@@ -95,43 +92,58 @@ public class WifiUtils {
 
         return ssid;
     }
-    public static String getInfo(Context context) {
-        String logInfo = "";
-        String connectWifiIP = WifiUtils.getConnectWifiIP(context);
-        logInfo = LogUtils.record(logInfo,String.format("connectWifiIP=%s", connectWifiIP));
 
-        //getMacAddress()是本机无线网卡的MAC地址
-        String connectWifiMacAddress = WifiUtils.getConnectWifiMacAddress(context);
-        logInfo = LogUtils.record(logInfo,String.format("connectWifiMacAddress=%s", connectWifiMacAddress));
-
-        //getBSSID()是路由器WIFI的MAC地址
-        String connectWifiBSSID = WifiUtils.getConnectWifiBSSID(context);
-        logInfo = LogUtils.record(logInfo,String.format("connectWifiBSSID=%s", connectWifiBSSID));
-
-        //Service Set Identifier
-        String connectWifiSSID = WifiUtils.getConnectWifiSSID(context);
-        logInfo = LogUtils.record(logInfo,String.format("connectWifiSSID=%s", connectWifiSSID));
-        return logInfo;
-    }
-
-    public static Proxy getProxy(Context context){
-        Proxy proxy = Proxy.NO_PROXY;
+    public static boolean isWifiNetwork(Context context) {
+        boolean ret = false;
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if(null != connectivityManager){
+        if (null != connectivityManager) {
             NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-            if(null != networkInfo){
+            if (null != networkInfo) {
                 int type = networkInfo.getType();
-               // if(ConnectivityManager.TYPE_MOBILE == type)
-                {
-                    //获取系统代理的IP与端口
-                    String defaultHost = android.net.Proxy.getDefaultHost();
-                    int defaultPort = android.net.Proxy.getDefaultPort();
-                    if(defaultHost != null && defaultPort != -1) {
-                        proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(defaultHost, defaultPort));
-                    }
+                if (ConnectivityManager.TYPE_WIFI == type) {
+                    ret = true;
                 }
             }
         }
-        return proxy;
+        return ret;
+    }
+
+    public static String getInfo(Context context) {
+        String logInfo = "";
+        boolean isWifiNetwork = isWifiNetwork(context);
+        if(isWifiNetwork){
+            logInfo = LogUtils.record(logInfo,"");
+
+            String connectWifiIP = WifiUtils.getConnectWifiIP(context);
+            logInfo = LogUtils.record(logInfo,String.format("connectWifiIP=%s", connectWifiIP));
+
+            //getMacAddress()是本机无线网卡的MAC地址
+            String connectWifiMacAddress = WifiUtils.getConnectWifiMacAddress(context);
+            logInfo = LogUtils.record(logInfo,String.format("connectWifiMacAddress=%s", connectWifiMacAddress));
+
+            //getBSSID()是路由器WIFI的MAC地址
+            String connectWifiBSSID = WifiUtils.getConnectWifiBSSID(context);
+            logInfo = LogUtils.record(logInfo,String.format("connectWifiBSSID=%s", connectWifiBSSID));
+
+            //Service Set Identifier
+            String connectWifiSSID = WifiUtils.getConnectWifiSSID(context);
+            logInfo = LogUtils.record(logInfo,String.format("connectWifiSSID=%s", connectWifiSSID));
+
+            String proxyDefaultHost = WifiUtils.getProxyDefaultHost();
+            logInfo = LogUtils.record(logInfo,String.format("proxyDefaultHost=%s", proxyDefaultHost));
+
+            int proxyDefaultPort = WifiUtils.getProxyDefaultPort();
+            logInfo = LogUtils.record(logInfo,String.format("proxyDefaultPort=%d", proxyDefaultPort));
+        }
+
+        return logInfo;
+    }
+
+    public static String getProxyDefaultHost(){
+        return Proxy.getDefaultHost();
+    }
+
+    public static int getProxyDefaultPort(){
+        return Proxy.getDefaultPort();
     }
 }

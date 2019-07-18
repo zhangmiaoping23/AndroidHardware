@@ -12,6 +12,7 @@ import com.example.hardware.Util.HardwareUtils;
 import com.example.hardware.Util.HuaweiHardwareUtils;
 import com.example.hardware.Util.LgHardwareUtils;
 import com.example.hardware.Util.NubiaHardwareUtils;
+import com.example.hardware.Util.MobileNetworkUtils;
 import com.example.hardware.Util.Qiku360HardwareUtils;
 import com.example.hardware.Util.SmartisanHardwareUtils;
 import com.example.hardware.Util.StoreUtils;
@@ -53,6 +54,11 @@ public class MainActivity extends Activity{
         showInfo += NubiaHardwareUtils.getInfo(this);
 
         showInfo += LgHardwareUtils.getInfo(this);
+
+        showInfo += WifiUtils.getInfo(this);
+
+        showInfo += MobileNetworkUtils.getInfo(this);
+
         showInfo += "\r\n";
         showInfo += SimCardUtils.getInfo(this);
 
@@ -70,9 +76,6 @@ public class MainActivity extends Activity{
 
         showInfo += "\r\n";
         showInfo += RuntimeUtils.getInfo();
-
-        showInfo += "\r\n";
-        showInfo += WifiUtils.getInfo(this);
 
         showInfo += "\r\n";
         showInfo += RootDetectUtils.getInfo(this);

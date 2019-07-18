@@ -495,6 +495,9 @@ public class SimCardUtils {
     public static String getInfo(Context context){
         String logInfo = "";
 
+        int phoneType = SimCardUtils.getPhoneType(context);
+        logInfo = LogUtils.record(logInfo,String.format("SimCardUtils phoneType=%d phoneTypeDescription=%s",phoneType,SimCardUtils.getPhoneTypeDescription(phoneType)));
+
         //network部分和sim卡存在无关
         int networkType = SimCardUtils.getNetworkType(context);
         logInfo = LogUtils.record(logInfo,String.format("SimCardUtils networkType=%d networkTypeDescription=%s",networkType,SimCardUtils.getNetworkTypeDescription(networkType)));
@@ -513,10 +516,6 @@ public class SimCardUtils {
 
         String carrierName = SimCardUtils.getCarrierName(context);
         logInfo = LogUtils.record(logInfo,String.format("SimCardUtils carrierName=%s",carrierName));
-
-
-        int phoneType = SimCardUtils.getPhoneType(context);
-        logInfo = LogUtils.record(logInfo,String.format("SimCardUtils phoneType=%d phoneTypeDescription=%s",phoneType,SimCardUtils.getPhoneTypeDescription(phoneType)));
 
         String simCountryIso = SimCardUtils.getSimCountryIso(context);
         logInfo = LogUtils.record(logInfo,String.format("SimCardUtils simCountryIso=%s",simCountryIso));
