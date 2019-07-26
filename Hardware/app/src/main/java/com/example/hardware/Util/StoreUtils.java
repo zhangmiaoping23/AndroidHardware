@@ -51,14 +51,14 @@ public class StoreUtils {
     public static long getRamTotalSizeInKB(){
         FileReader fileReader = null;
         BufferedReader bufferReader = null;
-        long RamTotalSize = 0;
+        long ramTotalSizeInKB = 0;
         try {
             fileReader = new FileReader("/proc/meminfo");
             bufferReader = new BufferedReader(fileReader,80);
             String line = bufferReader.readLine();
             if(line != null) {
                 String totalSize = line.substring(line.indexOf(':') + 1, line.indexOf('k')).trim();
-                RamTotalSize = Long.parseLong(totalSize);
+                ramTotalSizeInKB = Long.parseLong(totalSize);
             }
         }catch (Throwable throwable){
 
@@ -81,7 +81,7 @@ public class StoreUtils {
             }
         }
 
-        return RamTotalSize;
+        return ramTotalSizeInKB;
     }
 
     public static String getInfo() {
@@ -89,7 +89,7 @@ public class StoreUtils {
         String tmp = "";
 
         long ramTotalSizeInKB = StoreUtils.getRamTotalSizeInKB();
-        tmp = String.format("ramTotalSizeInKB=%d \"KB\"",ramTotalSizeInKB);
+        tmp = String.format("ramTotalSizeInKB=%d",ramTotalSizeInKB);
         logInfo = LogUtils.record(logInfo,tmp);
 
         return logInfo;
