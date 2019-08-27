@@ -157,13 +157,32 @@ public class HardwareUtils {
         if(Build.VERSION.SDK_INT >= 21 && Build.SUPPORTED_ABIS.length > 0) {
             ret = Build.SUPPORTED_ABIS;
         }
-        else if(!TextUtils.isEmpty(Build.CPU_ABI2)) {
-            ret = new String[]{Build.CPU_ABI, Build.CPU_ABI2};
+        else{
+            ret = getSupportAbis(Build.CPU_ABI,Build.CPU_ABI2);
         }
-        else {
-            ret = new String[]{Build.CPU_ABI};
+        return ret;
+    }
+    private static String[] getSupportAbis(String cpuAbi,String cpuAbi2){
+        String[] ret;
+        if(!TextUtils.isEmpty(cpuAbi2)) {
+            if (!"unknown".equals(cpuAbi2)) {
+                ret = new String[]{cpuAbi, cpuAbi2};
+            }else{
+                ret = new String[]{cpuAbi};
+            }
+        }
+        else{
+            ret = new String[]{cpuAbi};
         }
 
+        return ret;
+    }
+
+    public static String[] getBuildSupportAbisFromProp(){
+        String[] ret;
+        String cpuAbi = SystemPropertiesUtils.getString("ro.product.cpu.abi","");
+        String cpuAbi2 = SystemPropertiesUtils.getString("ro.product.cpu.abi2","");
+        ret = getSupportAbis(cpuAbi,cpuAbi2);
         return ret;
     }
 
@@ -491,11 +510,15 @@ public class HardwareUtils {
         String buildCpuApi2 = HardwareUtils.getbuildCpuApi2();
         logInfo = LogUtils.record(logInfo,String.format("buildCpuApi2=%s",buildCpuApi2));
 
+        String[] supportedApisFromProp = HardwareUtils.getBuildSupportAbisFromProp();
+        for(int index = 0; index < supportedApisFromProp.length;index ++){
+            logInfo = LogUtils.record(logInfo,String.format("SupportAbiFromProp%d=%s",index,supportedApisFromProp[index]));
+        }
+
         String[] supportedApis = HardwareUtils.getBuildSupportAbis();
         for(int index = 0; index < supportedApis.length;index ++){
             logInfo = LogUtils.record(logInfo,String.format("SupportAbi%d=%s",index,supportedApis[index]));
         }
-
 
         String buildDevice = HardwareUtils.getBuildDevice();
         logInfo = LogUtils.record(logInfo,String.format("buildDevice=%s",buildDevice));

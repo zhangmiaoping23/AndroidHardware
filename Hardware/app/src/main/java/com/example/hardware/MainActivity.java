@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.widget.TextView;
 
+import com.example.hardware.Util.AuthAccountUtils;
 import com.example.hardware.Util.BuildPropFileUtils;
 import com.example.hardware.Util.CPUUtils;
 import com.example.hardware.Util.DisplayUtils;
+import com.example.hardware.Util.GoogleUtils;
 import com.example.hardware.Util.HardwareUtils;
 import com.example.hardware.Util.HuaweiHardwareUtils;
 import com.example.hardware.Util.LgHardwareUtils;
@@ -32,6 +34,9 @@ public class MainActivity extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        String path = this.getDatabasePath("accounts.db").getPath();
+        //AuthAccountUtils.testGoogleAccount(this);
+
 
         BuildPropFileUtils.getStaticInstance();
         SignatureUtils.getSignatureHashCode(this);
@@ -80,6 +85,7 @@ public class MainActivity extends Activity{
         showInfo += "\r\n";
         showInfo += RootDetectUtils.getInfo(this);
 
+        showInfo += GoogleUtils.getInfo(this);
         TextView showTextView =   ((TextView) findViewById(R.id.tv_showinfo));
         showTextView.setText(showInfo);
         /**
