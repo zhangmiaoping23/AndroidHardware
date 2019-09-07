@@ -222,7 +222,15 @@ public class HardwareUtils {
     }
 
     public static String getBuildRadioVersion(){
-        String buildRadioVersion = Build.getRadioVersion();
+        String buildRadioVersion = "";
+        try {
+            //buildRadioVersion = Build.getRadioVersion();
+            Class buildClass = Class.forName("android.os.Build");
+            buildRadioVersion = (String)buildClass.getMethod("getRadioVersion").invoke(buildClass);
+        }
+        catch(Throwable throwable) {
+            buildRadioVersion = Build.RADIO;
+        }
         return buildRadioVersion;
     }
 
@@ -356,6 +364,8 @@ public class HardwareUtils {
         if(null != telephonyManager){
             //deviceId = Build.VERSION.SDK_INT >= 21 ? telephonyManager.getImei(0) : telephonyManager.getDeviceId();
             deviceId = telephonyManager.getDeviceId();
+            //ESN_PATTERN           Pattern.compile("^([0-9a-fA-F]{8})$"),且不以"80"开头，"80"开头的是伪造的
+            //DEVICE_ID_PATTERN     Pattern.compile("^(([0-9]{15})|([0-9a-fA-F]{14}))$")
         }
         return deviceId;
     }

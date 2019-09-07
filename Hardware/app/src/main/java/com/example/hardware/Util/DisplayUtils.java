@@ -1,6 +1,8 @@
 package com.example.hardware.Util;
 
+import android.app.ActivityManager;
 import android.content.Context;
+import android.content.pm.ConfigurationInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Point;
@@ -91,6 +93,16 @@ public class DisplayUtils {
         }
     }
 
+    public static String getConfigurationInfo(Context context){
+        ConfigurationInfo configurationInfo = ((ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE)).getDeviceConfigurationInfo();
+        int reqTouchScreen = configurationInfo.reqTouchScreen;
+        int reqKeyboardType = configurationInfo.reqKeyboardType;
+        int reqNavigation = configurationInfo.reqNavigation;
+        int screenLayout = context.getResources().getConfiguration().screenLayout;
+        int reqInputFeatures = configurationInfo.reqInputFeatures;
+        String info = configurationInfo.toString();
+        return info;
+    }
     private static int getSdkInt() {
         int ret = 0;
         try {
@@ -145,6 +157,11 @@ public class DisplayUtils {
         displayMetrics = DisplayUtils.getWindowManagerDisplayMetrics(context);
         if(null != displayMetrics){
             logInfo = LogUtils.record(logInfo,String.format("windowManagerDisplayMetrics=%s",displayMetrics.toString()));
+        }
+
+        String configurationInfo = DisplayUtils.getConfigurationInfo(context);
+        if(null != configurationInfo){
+            logInfo = LogUtils.record(logInfo,String.format("configurationInfo=%s",configurationInfo));
         }
         return logInfo;
     }

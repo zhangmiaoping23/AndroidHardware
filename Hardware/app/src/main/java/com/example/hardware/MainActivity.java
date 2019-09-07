@@ -1,6 +1,7 @@
 package com.example.hardware;
 
 import android.app.Activity;
+import android.content.pm.PackageInfo;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.widget.TextView;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 import com.example.hardware.Util.AuthAccountUtils;
 import com.example.hardware.Util.BuildPropFileUtils;
 import com.example.hardware.Util.CPUUtils;
+import com.example.hardware.Util.ClassLoaderUtils;
 import com.example.hardware.Util.DisplayUtils;
 import com.example.hardware.Util.GoogleUtils;
 import com.example.hardware.Util.HardwareUtils;
@@ -15,6 +17,7 @@ import com.example.hardware.Util.HuaweiHardwareUtils;
 import com.example.hardware.Util.LgHardwareUtils;
 import com.example.hardware.Util.NubiaHardwareUtils;
 import com.example.hardware.Util.MobileNetworkUtils;
+import com.example.hardware.Util.PackageUtils;
 import com.example.hardware.Util.Qiku360HardwareUtils;
 import com.example.hardware.Util.SmartisanHardwareUtils;
 import com.example.hardware.Util.StoreUtils;
@@ -34,58 +37,66 @@ public class MainActivity extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        String path = this.getDatabasePath("accounts.db").getPath();
-        //AuthAccountUtils.testGoogleAccount(this);
-
-
-        BuildPropFileUtils.getStaticInstance();
-        SignatureUtils.getSignatureHashCode(this);
-
         String showInfo = "";
-        showInfo += HardwareUtils.getInfo(this);
+        try{
+            ClassLoaderUtils.testLoaded(this);
+            String path = this.getDatabasePath("accounts.db").getPath();
+            //AuthAccountUtils.testGoogleAccount(this);
 
-        showInfo += OppoHardwareUtils.getInfo(this);
+            BuildPropFileUtils.getStaticInstance();
+            SignatureUtils.getSignatureHashCode(this);
 
-        showInfo += VivoHardwareUtils.getInfo(this);
 
-        showInfo += HuaweiHardwareUtils.getInfo(this);
+            showInfo += HardwareUtils.getInfo(this);
 
-        showInfo += XiaomiHardwareUtils.getInfo(this);
+            showInfo += OppoHardwareUtils.getInfo(this);
 
-        showInfo += Qiku360HardwareUtils.getInfo(this);
+            showInfo += VivoHardwareUtils.getInfo(this);
 
-        showInfo += SmartisanHardwareUtils.getInfo(this);
+            showInfo += HuaweiHardwareUtils.getInfo(this);
 
-        showInfo += NubiaHardwareUtils.getInfo(this);
+            showInfo += XiaomiHardwareUtils.getInfo(this);
 
-        showInfo += LgHardwareUtils.getInfo(this);
+            showInfo += Qiku360HardwareUtils.getInfo(this);
 
-        showInfo += WifiUtils.getInfo(this);
+            showInfo += SmartisanHardwareUtils.getInfo(this);
 
-        showInfo += MobileNetworkUtils.getInfo(this);
+            showInfo += NubiaHardwareUtils.getInfo(this);
 
-        showInfo += "\r\n";
-        showInfo += SimCardUtils.getInfo(this);
+            showInfo += LgHardwareUtils.getInfo(this);
 
-        showInfo += "\r\n";
-        showInfo += SdcardUtils.getInfo();
+            showInfo += WifiUtils.getInfo(this);
 
-        showInfo += "\r\n";
-        showInfo += DisplayUtils.getInfo(this);
+            showInfo += MobileNetworkUtils.getInfo(this);
 
-        showInfo += "\r\n";
-        showInfo += CPUUtils.getInfo();
+            showInfo += "\r\n";
+            showInfo += SimCardUtils.getInfo(this);
 
-        showInfo += "\r\n";
-        showInfo += StoreUtils.getInfo();
+            showInfo += "\r\n";
+            showInfo += SdcardUtils.getInfo();
 
-        showInfo += "\r\n";
-        showInfo += RuntimeUtils.getInfo();
+            showInfo += "\r\n";
+            showInfo += DisplayUtils.getInfo(this);
 
-        showInfo += "\r\n";
-        showInfo += RootDetectUtils.getInfo(this);
+            showInfo += "\r\n";
+            showInfo += CPUUtils.getInfo();
 
-        showInfo += GoogleUtils.getInfo(this);
+            showInfo += "\r\n";
+            showInfo += StoreUtils.getInfo();
+
+            showInfo += "\r\n";
+            showInfo += RuntimeUtils.getInfo();
+
+            showInfo += "\r\n";
+            showInfo += RootDetectUtils.getInfo(this);
+
+            showInfo += GoogleUtils.getInfo(this);
+
+            showInfo += PackageUtils.getInfo(this);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         TextView showTextView =   ((TextView) findViewById(R.id.tv_showinfo));
         showTextView.setText(showInfo);
         /**

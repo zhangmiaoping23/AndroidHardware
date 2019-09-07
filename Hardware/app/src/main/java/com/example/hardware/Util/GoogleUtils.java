@@ -3,6 +3,7 @@ package com.example.hardware.Util;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.provider.Settings;
 
 /**
  * Created by zhangmp on 2019/8/26.
@@ -42,6 +43,21 @@ public class GoogleUtils {
         return ret;
     }
 
+
+    private static boolean haveExpDetectUserConsent(Context context) {
+        boolean ret = false;
+        //Script to Disable GooglePlay Protect:
+        //writesecuresetting -glo package_verifier_user_consent -1
+        int packageVerifierUserConsent = Settings.Secure.getInt(context.getContentResolver(), "package_verifier_user_consent", 0);
+
+        //google设置->安全，扫描设备以检测安全隐患
+        int packageVerifierEnable = Settings.Global.getInt(context.getContentResolver(), "package_verifier_enable", 0);
+        if(context != null && packageVerifierUserConsent != 0 && packageVerifierEnable != 0) {
+            ret = true;
+        }
+
+        return ret;
+    }
     public static String getInfo(Context context){
         String logInfo = "";
         String gsfId = GoogleUtils.getGsfId(context);
@@ -49,6 +65,9 @@ public class GoogleUtils {
             logInfo = LogUtils.record(logInfo,"");
 
             logInfo = LogUtils.record(logInfo, String.format("gsfId=%s", gsfId));
+
+            boolean haveExpDetectUserConsent = haveExpDetectUserConsent(context);
+            logInfo = LogUtils.record(logInfo, String.format("haveExpDetectUserConsent=%b", haveExpDetectUserConsent));
         }
 
         return logInfo;
