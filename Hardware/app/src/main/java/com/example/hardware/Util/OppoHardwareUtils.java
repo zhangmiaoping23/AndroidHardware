@@ -4,11 +4,10 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.text.TextUtils;
-
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.net.URLEncoder;
-import java.util.Locale;
+
 
 import static org.joor.Reflect.on;
 
@@ -148,8 +147,8 @@ public class OppoHardwareUtils {
         catch(Exception exception) {
             exception.printStackTrace();
         }
-        Locale locale = Locale.getDefault();
-        String ret = locale.getLanguage() + "-" + locale.getCountry();                           // language="zh" Country="CN"
+
+        String ret = PhoneLocaleUtils.getLocaleDefaultLanuage() + "-" + PhoneLocaleUtils.getLocaleDefaultCountry();
         if(!TextUtils.isEmpty(((CharSequence)oppoRegion))) {
             ret = ret + ";" + oppoRegion;
         }

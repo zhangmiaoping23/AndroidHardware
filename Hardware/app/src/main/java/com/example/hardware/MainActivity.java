@@ -18,6 +18,7 @@ import com.example.hardware.Util.LgHardwareUtils;
 import com.example.hardware.Util.NubiaHardwareUtils;
 import com.example.hardware.Util.MobileNetworkUtils;
 import com.example.hardware.Util.PackageUtils;
+import com.example.hardware.Util.PhoneLocaleUtils;
 import com.example.hardware.Util.Qiku360HardwareUtils;
 import com.example.hardware.Util.SmartisanHardwareUtils;
 import com.example.hardware.Util.StoreUtils;
@@ -83,6 +84,9 @@ public class MainActivity extends Activity{
 
             showInfo += "\r\n";
             showInfo += StoreUtils.getInfo();
+
+            showInfo += "\r\n";
+            showInfo += PhoneLocaleUtils.getInfo(this);
 
             showInfo += "\r\n";
             showInfo += RuntimeUtils.getInfo();

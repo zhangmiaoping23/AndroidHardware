@@ -2,6 +2,8 @@ package com.example.hardware.Util;
 
 import android.content.Context;
 
+import org.joor.Reflect;
+
 /**
  * Created by zhangmp on 2019/6/13.
  */
@@ -31,6 +33,15 @@ public class XiaomiHardwareUtils {
 
             String systemPropUIInternalStorage = getSystemPropUIInternalStorage();
             logInfo = LogUtils.record(logInfo,String.format("xiaomi systemPropUIInternalStorage=%s",systemPropUIInternalStorage));
+
+            String systemPropCarrierName = getSystemPropCarrierName();
+            logInfo = LogUtils.record(logInfo,String.format("xiaomi systemPropCarrierName=%s",systemPropCarrierName));
+
+            String systemPropRegion = getSystemPropRegion();
+            logInfo = LogUtils.record(logInfo,String.format("xiaomi systemPropRegion=%s",systemPropRegion));
+
+            String oaid = getOaid(context);
+            logInfo = LogUtils.record(logInfo,String.format("xiaomi oaid=%s",oaid));
         }
 
 
@@ -76,4 +87,35 @@ public class XiaomiHardwareUtils {
         return versionCode;
     }
 
+    /**
+     * 判断当前机型是否是定制机，用于小米手机
+     *
+     * @return
+     */
+    public static String getSystemPropCarrierName() {
+        String customize = SystemPropertiesUtils.getString("ro.carrier.name", "unknown");
+        if (customize != null) {
+            return customize;
+        }
+        return null;
+    }
+
+    public static String getSystemPropRegion() {
+        String customize = SystemPropertiesUtils.getString("ro.miui.region", "CN");
+        if (customize != null) {
+            return customize;
+        }
+        return null;
+    }
+
+    //  Object v0 = Za_ReflectUtils.b_invokeObject(Za_ReflectUtils.a_findClass("com.android.id.IdentifierManager"), null, "getOAID", "(Landroid/content/Context;)Ljava/lang/String;", new Object[]{b_AppGlobals.b_getApplication()});
+    public static String getOaid(Context context){
+        String oaid = "";
+        try{
+            oaid = Reflect.on("com.android.id.IdentifierManager").call("getOAID",context).get();
+        }catch (Throwable throwable){
+            throwable.toString();
+        }
+        return oaid;
+    }
 }
