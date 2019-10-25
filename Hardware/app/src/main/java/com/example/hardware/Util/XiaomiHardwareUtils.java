@@ -22,8 +22,26 @@ public class XiaomiHardwareUtils {
         if(manufacturer.contains("xiaomi")){
             logInfo = LogUtils.record(logInfo,"");
 
-            String systemPropUIVersionCode = getSystemPropUIVersionCode();
-            logInfo = LogUtils.record(logInfo,String.format("xiaomi systemPropUIVersionCode=%s",systemPropUIVersionCode));
+            boolean isAlphaBuild = isAlphaBuild();
+            logInfo = LogUtils.record(logInfo,String.format("xiaomi isAlphaBuild=%b",isAlphaBuild));
+
+            boolean isCtaBuild = isCtaBuild();
+            logInfo = LogUtils.record(logInfo,String.format("xiaomi isCtaBuild=%b",isCtaBuild));
+
+            boolean isCtsBuild = isCtsBuild();
+            logInfo = LogUtils.record(logInfo,String.format("xiaomi isCtsBuild=%b",isCtsBuild));
+
+            boolean isDevelopmentVersion = isDevelopmentVersion();
+            logInfo = LogUtils.record(logInfo,String.format("xiaomi isDevelopmentVersion=%b",isDevelopmentVersion));
+
+            boolean isInternationalBuild = isInternationalBuild();
+            logInfo = LogUtils.record(logInfo,String.format("xiaomi isInternationalBuild=%b",isInternationalBuild));
+
+            boolean isStableVersion = isStableVersion();
+            logInfo = LogUtils.record(logInfo,String.format("xiaomi isStableVersion=%b",isStableVersion));
+
+            boolean isTablet = isTablet();
+            logInfo = LogUtils.record(logInfo,String.format("xiaomi isTablet=%b",isTablet));
 
             String systemPropUIVersionName = getSystemPropUIVersionName();
             logInfo = LogUtils.record(logInfo,String.format("xiaomi systemPropUIVersionName=%s",systemPropUIVersionName));
@@ -163,6 +181,7 @@ public class XiaomiHardwareUtils {
         }
         return romLevel;
     }
+
     public static String getMiuiLevel(Context context,String packageName){
         String miuiLevelRet = "";
         try{
@@ -209,5 +228,75 @@ public class XiaomiHardwareUtils {
             throwable.toString();
         }
         return miuiLevelRet;
+    }
+
+    public static boolean isAlphaBuild() {
+        boolean ret = false;
+        try{
+            Reflect.on("miui.os.Build").field("IS_ALPHA_BUILD").get();
+        }catch (Throwable throwable){
+            throwable.toString();
+        }
+        return ret;
+    }
+
+    public static boolean isCtaBuild() {
+        boolean ret = false;
+        try{
+            Reflect.on("miui.os.Build").field("IS_CTA_BUILD").get();
+        }catch (Throwable throwable){
+            throwable.toString();
+        }
+        return ret;
+    }
+
+    public static boolean isCtsBuild() {
+        boolean ret = false;
+        try{
+            Reflect.on("miui.os.Build").field("IS_CTS_BUILD").get();
+        }catch (Throwable throwable){
+            throwable.toString();
+        }
+        return ret;
+    }
+
+    public static boolean isDevelopmentVersion() {
+        boolean ret = false;
+        try{
+            Reflect.on("miui.os.Build").field("IS_DEVELOPMENT_VERSION").get();
+        }catch (Throwable throwable){
+            throwable.toString();
+        }
+        return ret;
+    }
+
+    public static boolean isInternationalBuild() {
+        boolean ret = false;
+        try{
+            Reflect.on("miui.os.Build").field("IS_INTERNATIONAL_BUILD").get();
+        }catch (Throwable throwable){
+            throwable.toString();
+        }
+        return ret;
+    }
+
+    public static boolean isStableVersion() {
+        boolean ret = false;
+        try{
+            Reflect.on("miui.os.Build").field("IS_STABLE_VERSION").get();
+        }catch (Throwable throwable){
+            throwable.toString();
+        }
+        return ret;
+    }
+
+    public static boolean isTablet() {
+        boolean ret = false;
+        try{
+            Reflect.on("miui.os.Build").field("IS_TABLET").get();
+        }catch (Throwable throwable){
+            throwable.toString();
+        }
+        return ret;
     }
 }

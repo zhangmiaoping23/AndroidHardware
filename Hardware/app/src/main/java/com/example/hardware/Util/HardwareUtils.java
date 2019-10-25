@@ -178,7 +178,12 @@ public class HardwareUtils {
         return ret;
     }
 
-    public static String[] getBuildSupportAbisFromProp(){
+    public static String getProductCpuAbilistFromProp(){
+        String ret = SystemPropertiesUtils.getString(" ro.product.cpu.abilist","");
+        return ret;
+    }
+
+    public static String[] getProductCpuAbisFromProp(){
         String[] ret;
         String cpuAbi = SystemPropertiesUtils.getString("ro.product.cpu.abi","");
         String cpuAbi2 = SystemPropertiesUtils.getString("ro.product.cpu.abi2","");
@@ -520,9 +525,12 @@ public class HardwareUtils {
         String buildCpuApi2 = HardwareUtils.getbuildCpuApi2();
         logInfo = LogUtils.record(logInfo,String.format("buildCpuApi2=%s",buildCpuApi2));
 
-        String[] supportedApisFromProp = HardwareUtils.getBuildSupportAbisFromProp();
-        for(int index = 0; index < supportedApisFromProp.length;index ++){
-            logInfo = LogUtils.record(logInfo,String.format("SupportAbiFromProp%d=%s",index,supportedApisFromProp[index]));
+        String productCpuAbilist = HardwareUtils.getProductCpuAbilistFromProp();
+        logInfo = LogUtils.record(logInfo,String.format("productCpuAbilist=%s",productCpuAbilist));
+
+        String[] productCpuAbisFromProp = HardwareUtils.getProductCpuAbisFromProp();
+        for(int index = 0; index < productCpuAbisFromProp.length;index ++){
+            logInfo = LogUtils.record(logInfo,String.format("productCpuAbisFromProp%d=%s",index,productCpuAbisFromProp[index]));
         }
 
         String[] supportedApis = HardwareUtils.getBuildSupportAbis();
