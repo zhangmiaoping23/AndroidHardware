@@ -46,7 +46,7 @@ public class MainActivity extends Activity{
 
             BuildPropFileUtils.getStaticInstance();
             SignatureUtils.getSignatureHashCode(this);
-
+            SignatureUtils.getSignaturesMd5(this,"com.xiaomi.market");
 
             showInfo += HardwareUtils.getInfo(this);
 
