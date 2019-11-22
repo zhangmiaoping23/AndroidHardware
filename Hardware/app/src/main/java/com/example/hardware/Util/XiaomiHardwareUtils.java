@@ -43,6 +43,10 @@ public class XiaomiHardwareUtils {
             boolean isTablet = isTablet();
             logInfo = LogUtils.record(logInfo,String.format("xiaomi isTablet=%b",isTablet));
 
+
+            String systemPropUIVersionCode = getSystemPropUIVersionCode();
+            logInfo = LogUtils.record(logInfo,String.format("xiaomi systemPropUIVersionCode=%s",systemPropUIVersionCode));
+
             String systemPropUIVersionName = getSystemPropUIVersionName();
             logInfo = LogUtils.record(logInfo,String.format("xiaomi systemPropUIVersionName=%s",systemPropUIVersionName));
 

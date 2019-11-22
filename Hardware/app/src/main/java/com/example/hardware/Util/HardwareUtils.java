@@ -4,6 +4,8 @@ import android.os.Build;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 
 import com.android.internal.util.HexDump;
 
@@ -20,6 +22,14 @@ import java.util.TimeZone;
 public class HardwareUtils {
     public static String getSystemUserAgent(){
         return System.getProperty("http.agent");
+    }
+
+    public static String getWebkitUserAgent(Context context){
+        String userAgent = "";
+        WebView webView = new WebView(context);
+        WebSettings webSettings = webView.getSettings();
+        userAgent = webSettings.getUserAgentString();
+        return userAgent;
     }
 
     public static final int SETTINGS_SYSTEM = 1;
@@ -463,6 +473,9 @@ public class HardwareUtils {
 
         String userAgent = HardwareUtils.getSystemUserAgent();
         logInfo = LogUtils.record(logInfo,String.format("userAgent=%s",userAgent));
+
+        String webkitUserAgent = HardwareUtils.getWebkitUserAgent(context);
+        logInfo = LogUtils.record(logInfo,String.format("webkitUserAgent=%s",webkitUserAgent));
 
         String hostAddress = HardwareUtils.getHostAddress();
         logInfo = LogUtils.record(logInfo,String.format("ip=%s",hostAddress));
