@@ -249,18 +249,24 @@ public class HardwareUtils {
         return buildRadioVersion;
     }
 
-    public static String getBuildSerial(){
+    public static String getBuildSerial(Context context){
         String ret = "";
         if(Build.VERSION.SDK_INT >= 26) {
-            try {
-                //ret = Build.getSerial();
+            boolean hasPermission = PermissionUtils.hasPermission(context,"android.permission.READ_PHONE_STATE");
+            if(hasPermission){
+                try {
+                    String buildClassName = "android.os.Build";
+                    Method getSerialMethod = Class.forName(buildClassName).getMethod("getSerial");
+                    if(getSerialMethod != null) {
+                        ret = (String) getSerialMethod.invoke(null);
+                    }
+                }
+                catch(Exception exception) {
+                    ret = "";
+                }
             }
-            catch(SecurityException exception) {
-                ret = "";
-            }
-        }
-
-        if((null == ret) || (ret.isEmpty())){
+        }else{
+            //?高版本是否能通过此接口
             ret = Build.SERIAL;
         }
 
