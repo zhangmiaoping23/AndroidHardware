@@ -43,6 +43,8 @@ public class XiaomiHardwareUtils {
             boolean isTablet = isTablet();
             logInfo = LogUtils.record(logInfo,String.format("xiaomi isTablet=%b",isTablet));
 
+            String romBuildCode = getRomBuildCode();
+            logInfo = LogUtils.record(logInfo,String.format("xiaomi romBuildCode=%s",romBuildCode));
 
             String systemPropUIVersionCode = getSystemPropUIVersionCode();
             logInfo = LogUtils.record(logInfo,String.format("xiaomi systemPropUIVersionCode=%s",systemPropUIVersionCode));
@@ -302,5 +304,17 @@ public class XiaomiHardwareUtils {
             throwable.toString();
         }
         return ret;
+    }
+
+    public static String getRomBuildCode(){
+        String romBuildCode = "";
+        if(isAlphaBuild()){
+            romBuildCode = "A";
+        }else if(isDevelopmentVersion()){
+            romBuildCode = "D";
+        }else if(isStableVersion()){
+            romBuildCode = "S";
+        }
+        return romBuildCode;
     }
 }

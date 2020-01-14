@@ -458,7 +458,7 @@ public class HardwareUtils {
     */
     public static String getInfo(Context context){
         String logInfo = "";
-        logInfo = getBuildInfo();
+        logInfo = getBuildInfo(context);
         String imei = HardwareUtils.getImei(context);
         logInfo = LogUtils.record(logInfo,String.format("telephonyManagerImei=%s",imei));
 
@@ -527,7 +527,7 @@ public class HardwareUtils {
         I/AndroidHardware: buildVersionSDK=22
         I/AndroidHardware: firmwareVersion=5.1
      */
-    public static String  getBuildInfo(){
+    public static String  getBuildInfo(Context context){
         String logInfo = "";
         String buildBoard = HardwareUtils.getBuildBoard();
         logInfo = LogUtils.record(logInfo,String.format("buildBoard=%s",buildBoard));
@@ -575,7 +575,7 @@ public class HardwareUtils {
         String buildRadioVersion = HardwareUtils.getBuildRadioVersion();
         logInfo = LogUtils.record(logInfo,String.format("buildRadioVersion=%s",buildRadioVersion));
 
-        String buildSerial = HardwareUtils.getBuildSerial();
+        String buildSerial = HardwareUtils.getBuildSerial(context);
         logInfo = LogUtils.record(logInfo,String.format("buildSerial=%s",buildSerial));
 
         String buildHardware = HardwareUtils.getBuildHardware();
