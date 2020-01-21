@@ -7,6 +7,7 @@ import android.os.Build;
 import android.telephony.SubscriptionInfo;
 import android.telephony.SubscriptionManager;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 
 import java.lang.reflect.Method;
 
@@ -372,6 +373,30 @@ public class SimCardUtils {
         return subscriberId;
     }
 
+    public static String getNetworkOperatorBySystemprop(){
+        String networkOperator = "";
+        String gsmOperatorNumeric =SystemPropertiesUtils.getString("gsm.operator.numeric","");
+        StringBuilder stringBuilder = new StringBuilder();
+        if(!TextUtils.isEmpty(gsmOperatorNumeric)) {
+            String splitChar = ",";
+            String[] splitArray = gsmOperatorNumeric.split(splitChar);
+            int length = splitArray.length;
+            int index;
+            for(index = 0; index < length; ++index) {
+                String splitItem = splitArray[index];
+                if(!TextUtils.isEmpty(splitItem) && !"00000".equals(splitItem)) {
+                    if(stringBuilder.length() > 0) {
+                        stringBuilder.append(splitChar);
+                    }
+
+                    stringBuilder.append(splitItem);
+                }
+            }
+        }
+
+        networkOperator = stringBuilder.toString();
+        return networkOperator;
+    }
     /*
      *无sim卡也有值:46003
      */
@@ -654,6 +679,11 @@ public class SimCardUtils {
         String mcc = SimCardUtils.getMCC(networkOperator);
         String mnc = SimCardUtils.getMNC(networkOperator);
         logInfo = LogUtils.record(logInfo,String.format("SimCardUtils networkOperator=%s mcc=%s mnc=%s",networkOperator,mcc,mnc));
+
+        networkOperator = SimCardUtils.getNetworkOperatorBySystemprop();
+        mcc = SimCardUtils.getMCC(networkOperator);
+        mnc = SimCardUtils.getMNC(networkOperator);
+        logInfo = LogUtils.record(logInfo,String.format("SimCardUtils networkOperatorBySystemProp=%s mcc=%s mnc=%s",networkOperator,mcc,mnc));
 
         String simOperator = SimCardUtils.getSimOperator(context);
         String simMcc = SimCardUtils.getMCC(simOperator);

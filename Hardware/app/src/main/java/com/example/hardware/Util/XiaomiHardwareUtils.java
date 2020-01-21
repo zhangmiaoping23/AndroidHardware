@@ -5,9 +5,14 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
+import android.net.Uri;
+import android.os.Build;
+import android.text.TextUtils;
 
 import org.joor.Reflect;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,6 +26,12 @@ public class XiaomiHardwareUtils {
         manufacturer = manufacturer.toLowerCase();
         if(manufacturer.contains("xiaomi")){
             logInfo = LogUtils.record(logInfo,"");
+
+            List<String> imeiList = getImeiListFromSystemProp();    //getImeiListFromMiui() > getImeiListAboveLollipop(context),getImeiListBelowLollipop(context) > getImeiListFromSystemProp()
+            logInfo = LogUtils.record(logInfo,String.format("xiaomi imeiListFromSystemProp=%s",imeiList.toString()));
+
+            String aaid = getAaid(context);
+            logInfo = LogUtils.record(logInfo,String.format("xiaomi aaid=%s",aaid));
 
             boolean isAlphaBuild = isAlphaBuild();
             logInfo = LogUtils.record(logInfo,String.format("xiaomi isAlphaBuild=%b",isAlphaBuild));
@@ -316,5 +327,77 @@ public class XiaomiHardwareUtils {
             romBuildCode = "S";
         }
         return romBuildCode;
+    }
+
+    private static List<String> getImeiListFromSystemProp() {
+        ArrayList arrayList = new ArrayList();
+        String imei1 = SystemPropertiesUtils.getString("ro.ril.miui.imei0",""); //[ro.ril.miui.imei0]: [865411023509766] //[ro.ril.miui.imei]: [865411023509766]
+        if(TextUtils.isEmpty(imei1)) {
+            imei1 = SystemPropertiesUtils.getString("ro.ril.oem.imei","");
+        }
+
+        if(TextUtils.isEmpty(imei1)) {
+            imei1 = SystemPropertiesUtils.getString("persist.radio.imei","");
+        }
+
+        if(isLegalImei(imei1)) {
+            arrayList.add(imei1);
+        }
+
+        String imei2 = "";
+        if(isMultisim()) {
+            imei2 = SystemPropertiesUtils.getString("ro.ril.miui.imei1","");
+            if(TextUtils.isEmpty(imei2)) {
+                imei2 = SystemPropertiesUtils.getString("ro.ril.oem.imei2","");
+            }
+
+            if(TextUtils.isEmpty(imei2)) {
+                imei2 = SystemPropertiesUtils.getString("persist.radio.imei2","");
+            }
+
+            if(isLegalImei(imei2)) {
+                arrayList.add(imei2);
+            }
+        }
+        return arrayList;
+    }
+
+    private static boolean isLegalImei(String imei) {
+        boolean isLegal = imei == null || imei.length() != 15 || (imei.matches("^0*$")) ? false : true;
+        return isLegal;
+    }
+
+    private static boolean isMultisim() {
+        if("dsds".equals(SystemPropertiesUtils.getString("persist.radio.multisim.config",""))) {
+            return true;
+        }
+
+        boolean ret = false;
+        String buildDevice = Build.DEVICE;
+        if("lcsh92_wet_jb9".equals(buildDevice)
+                || "lcsh92_wet_tdd".equals(buildDevice)
+                || "HM2013022".equals(buildDevice)
+                || "HM2013023".equals(buildDevice)
+                || "armani".equals(buildDevice)
+                || "HM2014011".equals(buildDevice)
+                || "HM2014012".equals(buildDevice)) {
+           ret = true;
+        }
+
+        return ret;
+    }
+
+    public static String getAaid(Context context){
+        String aaid = "";
+        try{
+            aaid = context.getContentResolver().getType(Uri.parse("content://com.miui.analytics.server.AnalyticsProvider/aaid"));
+        }catch (Exception e){
+
+        }
+
+        if(aaid.isEmpty()){
+            aaid = (String)Reflect.on("android.provider.MiuiSettings$Ad").call("getAaid",context.getContentResolver()).get();
+        }
+        return aaid;
     }
 }
