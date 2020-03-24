@@ -7,6 +7,7 @@ import android.text.method.ScrollingMovementMethod;
 import android.widget.TextView;
 
 import com.example.hardware.Util.AuthAccountUtils;
+import com.example.hardware.Util.BatteryUtils;
 import com.example.hardware.Util.BuildPropFileUtils;
 import com.example.hardware.Util.CPUUtils;
 import com.example.hardware.Util.ClassLoaderUtils;
@@ -27,6 +28,7 @@ import com.example.hardware.Util.RuntimeUtils;
 import com.example.hardware.Util.SdcardUtils;
 import com.example.hardware.Util.SignatureUtils;
 import com.example.hardware.Util.SimCardUtils;
+import com.example.hardware.Util.SystemFeatureUtils;
 import com.example.hardware.Util.VivoHardwareUtils;
 import com.example.hardware.Util.WifiUtils;
 import com.example.hardware.Util.XiaomiHardwareUtils;
@@ -47,6 +49,8 @@ public class MainActivity extends Activity{
             BuildPropFileUtils.getStaticInstance();
             SignatureUtils.getSignatureHashCode(this);
             SignatureUtils.getSignaturesMd5(this,"com.xiaomi.market");
+
+            showInfo += BatteryUtils.getInfo(this);
 
             showInfo += HardwareUtils.getInfo(this);
 
@@ -97,6 +101,8 @@ public class MainActivity extends Activity{
             showInfo += GoogleUtils.getInfo(this);
 
             showInfo += PackageUtils.getInfo(this);
+
+            showInfo += SystemFeatureUtils.getInfo(this);
         }catch (Exception e){
             e.printStackTrace();
         }

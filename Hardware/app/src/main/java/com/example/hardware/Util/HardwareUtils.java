@@ -152,6 +152,11 @@ public class HardwareUtils {
         return buildBoard;
     }
 
+    public static String getSystemPropBoardPlatform(){
+        String ret = SystemPropertiesUtils.getString("ro.board.platform","");
+        return ret;
+    }
+
     public static String getBuildBootLoader(){
         String buildBootloader = Build.BOOTLOADER;
         return buildBootloader;
@@ -189,7 +194,7 @@ public class HardwareUtils {
     }
 
     public static String getProductCpuAbilistFromProp(){
-        String ret = SystemPropertiesUtils.getString(" ro.product.cpu.abilist","");
+        String ret = SystemPropertiesUtils.getString("ro.product.cpu.abilist","");
         return ret;
     }
 
@@ -531,6 +536,9 @@ public class HardwareUtils {
         String logInfo = "";
         String buildBoard = HardwareUtils.getBuildBoard();
         logInfo = LogUtils.record(logInfo,String.format("buildBoard=%s",buildBoard));
+
+        String systemPropBoardPlatform = HardwareUtils.getSystemPropBoardPlatform();
+        logInfo = LogUtils.record(logInfo,String.format("systemPropBoardPlatform=%s",systemPropBoardPlatform));
 
         String buildBootloader = HardwareUtils.getBuildBootLoader();
         logInfo = LogUtils.record(logInfo,String.format("buildBootloader=%s",buildBootloader));
