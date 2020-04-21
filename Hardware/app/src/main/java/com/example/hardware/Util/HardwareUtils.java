@@ -12,6 +12,9 @@ import com.android.internal.util.HexDump;
 import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.TimeZone;
 
@@ -254,6 +257,12 @@ public class HardwareUtils {
         return buildRadioVersion;
     }
 
+    public static String getSystemPropGsmVersionBaseband(){
+        String gsmVersionBaseband = SystemPropertiesUtils.getString("gsm.version.baseband","");
+        return gsmVersionBaseband;
+
+    }
+
     public static String getBuildSerial(Context context){
         String ret = "";
         if(Build.VERSION.SDK_INT >= 26) {
@@ -404,11 +413,18 @@ public class HardwareUtils {
         return SimCardUtils.getSimSerialNumber(context);//89860117838006905255
     }
 
-    public static String getTimeZone(){
-        String timeZone = TimeZone.getDefault().getID();
-        return timeZone;
+    public static String getTimeZoneId(){
+        String timeZoneId = TimeZone.getDefault().getID();
+        return timeZoneId;
     }
 
+    public static String getTimeZoneByCalendar(){
+        TimeZone timeZone = Calendar.getInstance().getTimeZone();
+        Date date = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ZZZZ");
+        simpleDateFormat.setTimeZone(timeZone);
+        return simpleDateFormat.format(date);
+    }
     /*
     private static String getValueFromBuildPropFile() {
         String[] splitArrays;
@@ -479,8 +495,11 @@ public class HardwareUtils {
         androidId = HardwareUtils.getAndroidId(context,HardwareUtils.SETTINGS_SECURE);
         logInfo = LogUtils.record(logInfo,String.format("Settings.Secure.androidId=%s",androidId));
 
-        String timeZone = HardwareUtils.getTimeZone();
-        logInfo = LogUtils.record(logInfo,String.format("timeZone=%s",timeZone));
+        String timeZoneId = HardwareUtils.getTimeZoneId();
+        logInfo = LogUtils.record(logInfo,String.format("timeZoneId=%s",timeZoneId));
+
+        String timeZoneByCalendar = HardwareUtils.getTimeZoneByCalendar();
+        logInfo = LogUtils.record(logInfo,String.format("timeZoneByCalendar=%s",timeZoneByCalendar));
 
         String userAgent = HardwareUtils.getSystemUserAgent();
         logInfo = LogUtils.record(logInfo,String.format("userAgent=%s",userAgent));
@@ -582,6 +601,10 @@ public class HardwareUtils {
 
         String buildRadioVersion = HardwareUtils.getBuildRadioVersion();
         logInfo = LogUtils.record(logInfo,String.format("buildRadioVersion=%s",buildRadioVersion));
+
+        String systemPropGsmVersionBaseband = HardwareUtils.getSystemPropGsmVersionBaseband();
+        logInfo = LogUtils.record(logInfo,String.format("systemPropGsmVersionBaseband=%s",systemPropGsmVersionBaseband));
+
 
         String buildSerial = HardwareUtils.getBuildSerial(context);
         logInfo = LogUtils.record(logInfo,String.format("buildSerial=%s",buildSerial));

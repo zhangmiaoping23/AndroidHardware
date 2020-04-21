@@ -21,6 +21,7 @@ import com.example.hardware.Util.MobileNetworkUtils;
 import com.example.hardware.Util.PackageUtils;
 import com.example.hardware.Util.PhoneLocaleUtils;
 import com.example.hardware.Util.Qiku360HardwareUtils;
+import com.example.hardware.Util.SensorUtils;
 import com.example.hardware.Util.SmartisanHardwareUtils;
 import com.example.hardware.Util.StoreUtils;
 import com.example.hardware.Util.OppoHardwareUtils;
@@ -49,8 +50,6 @@ public class MainActivity extends Activity{
             BuildPropFileUtils.getStaticInstance();
             SignatureUtils.getSignatureHashCode(this);
             SignatureUtils.getSignaturesMd5(this,"com.xiaomi.market");
-
-            showInfo += BatteryUtils.getInfo(this);
 
             showInfo += HardwareUtils.getInfo(this);
 
@@ -90,6 +89,12 @@ public class MainActivity extends Activity{
             showInfo += StoreUtils.getInfo();
 
             showInfo += "\r\n";
+            showInfo += BatteryUtils.getInfo(this);
+
+            showInfo += "\r\n";
+            showInfo += SensorUtils.getInfo(this);
+
+            showInfo += "\r\n";
             showInfo += PhoneLocaleUtils.getInfo(this);
 
             showInfo += "\r\n";
@@ -103,6 +108,8 @@ public class MainActivity extends Activity{
             showInfo += PackageUtils.getInfo(this);
 
             showInfo += SystemFeatureUtils.getInfo(this);
+
+
         }catch (Exception e){
             e.printStackTrace();
         }
