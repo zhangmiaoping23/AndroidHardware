@@ -272,6 +272,7 @@ public class HardwareUtils {
                     String buildClassName = "android.os.Build";
                     Method getSerialMethod = Class.forName(buildClassName).getMethod("getSerial");
                     if(getSerialMethod != null) {
+                        getSerialMethod.setAccessible(true);
                         ret = (String) getSerialMethod.invoke(null);
                     }
                 }
@@ -280,7 +281,7 @@ public class HardwareUtils {
                 }
             }
         }else{
-            //?高版本是否能通过此接口
+            //Android8.0(26),Android9.0(28)此接口也正常
             ret = Build.SERIAL;
         }
 
