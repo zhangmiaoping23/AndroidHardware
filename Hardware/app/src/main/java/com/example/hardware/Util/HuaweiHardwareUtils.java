@@ -2,6 +2,7 @@ package com.example.hardware.Util;
 
 import android.content.Context;
 import android.os.SystemProperties;
+import android.provider.Settings;
 import android.text.TextUtils;
 
 import com.example.hardware.rootdetect.HuaweiEmui10RootDetectUtils;
@@ -47,6 +48,12 @@ public class HuaweiHardwareUtils {
 
             String custVersion = getCustCVersion();
             logInfo = LogUtils.record(logInfo,String.format("huawei custVersion=%s",custVersion));
+
+            String unifiedDeviceName = getUnifiedDeviceName(context);
+            logInfo = LogUtils.record(logInfo,String.format("huawei unifiedDeviceName=%s",unifiedDeviceName));
+
+            String sysPropMarketingName = getMarketingName();
+            logInfo = LogUtils.record(logInfo,String.format("huawei sysPropMarketingName=%s",sysPropMarketingName));
 
             boolean isRoot = HuaweiEmui10RootDetectUtils.isRoot();
 
@@ -143,6 +150,17 @@ public class HuaweiHardwareUtils {
             exception.printStackTrace();
         }
         return emuiVersion;
+    }
+
+
+    public static String getUnifiedDeviceName(Context context){
+        String unifiedDeviceName = Settings.Global.getString(context.getContentResolver(), "unified_device_name");
+        return unifiedDeviceName;
+    }
+
+    public static String getMarketingName(){
+        String marketingName = SystemPropertiesUtils.getString("ro.config.marketing_name","");
+        return marketingName;
     }
 
     public static String getCustCVersion() {
