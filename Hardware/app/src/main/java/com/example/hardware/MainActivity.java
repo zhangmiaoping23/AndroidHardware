@@ -1,12 +1,14 @@
 package com.example.hardware;
 
 import android.app.Activity;
-import android.content.pm.PackageInfo;
+import android.content.ComponentName;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.hardware.Util.AuthAccountUtils;
 import com.example.hardware.Util.BatteryUtils;
 import com.example.hardware.Util.BuildPropFileUtils;
 import com.example.hardware.Util.CPUUtils;
@@ -122,6 +124,42 @@ public class MainActivity extends Activity{
          */
         showTextView.setMovementMethod(ScrollingMovementMethod.getInstance());
 
+        buttonTest = (Button) findViewById(R.id.button_test);
+        buttonTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //changeProxyWifiTest();
+            }
+        });
+
     }
 
+    private void changeProxyWifiTest(){
+        try{
+            //经过测试，通过exec su 在android 7.0,无法设置成功，得用startActivity的形式
+            //Runtime.getRuntime().exec("su -c \"am broadcast -a tk.elevenk.proxysetter.changeproxy -e host 192.168.10.221 -e port 8889 -e ssid 360免费WiFi-76\"");
+            // Process process = Runtime.getRuntime().exec("su -c \"am start -D -n tk.elevenk.proxysetter/.MainActivity -e host 192.168.10.221 -e port 8889 -e ssid 360免费WiFi-76\"");
+            //process.waitFor();
+
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            ComponentName componentName = new ComponentName("tk.elevenk.proxysetter", "tk.elevenk.proxysetter.MainActivity");
+            intent.setComponent(componentName);
+
+            //intent.putExtra("ssid","360免费WiFi-76");
+
+            intent.putExtra("ssid","360wifi");
+            intent.putExtra("key","nrqyyv2723");
+
+            intent.putExtra("host", "192.168.10.221");//这里Intent传值
+            intent.putExtra("port","8889");
+
+            String bypassList = String.format("154.202.13.56,123.57.37.225,%s", "192.168.10.223");
+            intent.putExtra("bypass",bypassList);
+            startActivity(intent);
+
+        }catch (Exception exception){
+            exception.toString();
+        }
+    }
+    private Button buttonTest;
 }

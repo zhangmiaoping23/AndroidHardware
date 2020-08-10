@@ -17,4 +17,12 @@
         android:scrollbars="vertical"
         android:textSize="18dp"
         android:text="Hello World!" />
+
+    <Button
+        android:text="测试"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/button_test" />
 </RelativeLayout>
