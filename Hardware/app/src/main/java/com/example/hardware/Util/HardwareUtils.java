@@ -111,7 +111,7 @@ public class HardwareUtils {
         return macAddress;
     }
 
-    public static String getMacAddressFromReflectNetworkInterface() {
+    public static String getMacAddressFromReflectNetworkInterface(String splitString) {
         String ret = "";
         Object hardwareAddress;
         NetworkInterface networkInterface;
@@ -132,7 +132,7 @@ public class HardwareUtils {
                         int index;
                         for(index = 0; index < bytesHardwareAddress.length - 1; ++index) {
                             stringBuffer.append(HexDump.toHexString(bytesHardwareAddress[index]).toUpperCase());
-                            stringBuffer.append("-");
+                            stringBuffer.append(splitString);
                         }
 
                         stringBuffer.append(HexDump.toHexString(bytesHardwareAddress[bytesHardwareAddress.length - 1]).toUpperCase());
@@ -514,7 +514,7 @@ public class HardwareUtils {
         String macAddressFromNetworkInterface = HardwareUtils.getMacAddress(hostAddress);
         logInfo = LogUtils.record(logInfo,String.format("macAddressFromNetworkInterface=%s",macAddressFromNetworkInterface));
 
-        String macAddressFromReflectNetworkInterface = HardwareUtils.getMacAddressFromReflectNetworkInterface();
+        String macAddressFromReflectNetworkInterface = HardwareUtils.getMacAddressFromReflectNetworkInterface("-");
         logInfo = LogUtils.record(logInfo,String.format("macAddressFromReflectNetworkInterface=%s",macAddressFromReflectNetworkInterface));
         return logInfo;
     }
