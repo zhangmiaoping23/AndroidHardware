@@ -145,6 +145,18 @@ public class WifiUtils {
 
             int proxyDefaultPort = WifiUtils.getProxyDefaultPort();
             logInfo = LogUtils.record(logInfo,String.format("proxyDefaultPort=%d", proxyDefaultPort));
+
+            String proxyHost = WifiUtils.getProxyHost(context);
+            logInfo = LogUtils.record(logInfo,String.format("proxyHost=%s", proxyHost));
+
+            int proxyPort = WifiUtils.getProxyPort(context);
+            logInfo = LogUtils.record(logInfo,String.format("proxyPort=%d", proxyPort));
+
+            String systemProxyHost = WifiUtils.getSystemProxyHost();
+            logInfo = LogUtils.record(logInfo,String.format("systemProxyHost=%s", systemProxyHost));
+
+            int systemProxyPort = WifiUtils.getSystemProxyPort();
+            logInfo = LogUtils.record(logInfo,String.format("systemProxyPort=%d", systemProxyPort));
         }
 
         return logInfo;
@@ -156,5 +168,29 @@ public class WifiUtils {
 
     public static int getProxyDefaultPort(){
         return Proxy.getDefaultPort();
+    }
+
+    public static String getProxyHost(Context context){
+        return Proxy.getHost(context);
+    }
+
+    public static int getProxyPort(Context context){
+        return Proxy.getPort(context);
+    }
+
+    public static String getSystemProxyHost(){
+        return System.getProperty("http.proxyHost");
+    }
+
+    public static int getSystemProxyPort(){
+        int port = -1;
+        String proxyPort = System.getProperty("http.proxyPort");
+        if(proxyPort != null){
+            if(false == proxyPort.isEmpty()){
+                port = Integer.parseInt(proxyPort);
+            }
+        }
+
+        return  port;
     }
 }
