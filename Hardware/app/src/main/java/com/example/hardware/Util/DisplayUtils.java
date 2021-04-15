@@ -7,6 +7,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Point;
 import android.os.Build;
+import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.MotionEvent;
@@ -141,6 +142,17 @@ public class DisplayUtils {
         return ret;
     }
 
+    public static int getScreenBrightness(Context context) {
+        int screenBrightness = 0;
+        try {
+            //系统屏幕亮度值在（0~255）之间
+            screenBrightness = Settings.System.getInt(context.getContentResolver(), "screen_brightness");
+        }
+        catch(Exception exception) {
+        }
+
+        return screenBrightness;
+    }
 
     public static String getInfo(Context context){
         getScreenFromDisplayMetrics(context);
@@ -163,6 +175,9 @@ public class DisplayUtils {
         if(null != configurationInfo){
             logInfo = LogUtils.record(logInfo,String.format("configurationInfo=%s",configurationInfo));
         }
+
+        int screenBrightness = DisplayUtils.getScreenBrightness(context);
+        logInfo = LogUtils.record(logInfo,String.format("screenBrightness=%d",screenBrightness));
         return logInfo;
     }
 

@@ -122,4 +122,9 @@ public class VivoHardwareUtils {
         return osVersion;
     }
 
+    public static String getSystemPropVivoProductOverSeas() {
+        String productOverSeas = "";
+        productOverSeas = SystemPropertiesUtils.getString("ro.vivo.product.overseas", "");
+        return productOverSeas;
+    }
 }

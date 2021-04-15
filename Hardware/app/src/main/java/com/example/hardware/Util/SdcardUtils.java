@@ -1,5 +1,8 @@
 package com.example.hardware.Util;
 
+import android.os.Build;
+import android.text.TextUtils;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.Reader;
@@ -19,6 +22,36 @@ public class SdcardUtils {
 
         }
         return sdcardName;
+    }
+
+    private static String getEmmcId() {
+        String emmcid = Build.VERSION.SDK_INT >= 28 ? getEmmcIdForAndroidP() : "";
+        try {
+            if(!TextUtils.isEmpty(((CharSequence)emmcid))) {
+                return emmcid;
+            }
+
+            emmcid = getSdcardCid();
+        }
+        catch(Exception v1) {
+            v1.printStackTrace();
+        }
+
+        return emmcid;
+    }
+
+
+    private static String getEmmcIdForAndroidP() {
+        String emmcId = "";
+        try {
+            Class FtDeviceInfoClass = Class.forName("android.util.FtDeviceInfo");
+            emmcId = (String)FtDeviceInfoClass.getMethod("getEmmcId").invoke(FtDeviceInfoClass.newInstance());
+        }
+        catch(Exception v0_1) {
+            emmcId = "";
+        }
+
+        return emmcId;
     }
 
     public static String getSdcardCid(){
@@ -189,8 +222,8 @@ public class SdcardUtils {
         String sdcardName = SdcardUtils.getSdcardName();
         logInfo = LogUtils.record(logInfo,String.format("manufactor：sdcardName=%s",sdcardName));
 
-        String sdcardCid = SdcardUtils.getSdcardCid();
-        logInfo = LogUtils.record(logInfo,String.format("sdcard ID: sdcardCid=%s",sdcardCid));
+        String sdcardCid = SdcardUtils.getEmmcId();
+        logInfo = LogUtils.record(logInfo,String.format("sdcard ID: emmCid(sdcardCid)=%s",sdcardCid));
 
         String sdcardCsd = SdcardUtils.getSdcardCsd();
         logInfo = LogUtils.record(logInfo,String.format("sdcardCsd=%s",sdcardCsd));

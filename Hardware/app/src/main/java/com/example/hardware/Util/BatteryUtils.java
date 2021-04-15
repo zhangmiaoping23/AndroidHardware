@@ -11,6 +11,25 @@ import android.os.Build;
  */
 
 public class BatteryUtils {
+
+    public static int getBatteryLevel(Context context){
+        int batteryLevel = -1;
+        try {
+            if(Build.VERSION.SDK_INT < 21) {
+                batteryLevel = -1;
+            }else{
+                //电池容量，单位微安时
+                BatteryManager batteryManager = (BatteryManager) context.getSystemService(Context.BATTERY_SERVICE);
+                int chargeCounter = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CHARGE_COUNTER);
+                batteryLevel  = chargeCounter / 1000;
+            }
+        }
+        catch(Exception exception) {
+        }
+
+        return batteryLevel;
+    }
+
     /**
      *  实时获取电量
      */
@@ -88,6 +107,7 @@ public class BatteryUtils {
         int batteryRemainingCapacity = 1;
         if(Build.VERSION.SDK_INT >= 21){
             BatteryManager batteryManager = (BatteryManager)context.getSystemService(Context.BATTERY_SERVICE);
+            //电池剩余容量，作为总容量的百分比
             batteryRemainingCapacity = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY);
         }
         return batteryRemainingCapacity;
@@ -104,6 +124,9 @@ public class BatteryUtils {
 
     public static String getInfo(Context context) {
         String logInfo = "";
+        int batteryLevel = getBatteryLevel(context);
+        logInfo = LogUtils.record(logInfo, String.format("batteryLevel=%s", batteryLevel));
+
         int batteryRemainingCapacityByReceiver = getBatteryRemainingCapacityByReceiver(context);
         logInfo = LogUtils.record(logInfo, String.format("batteryRemainingCapacityByReceiver=%s", batteryRemainingCapacityByReceiver));
 
